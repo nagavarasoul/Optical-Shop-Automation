@@ -1,4 +1,4 @@
-# VS Lens Mart website
+# Optical-Shop-Automation
 
 A website for **VS Lens Mart**, a family-run optical shop (since 1999) with two branches, Indresham and Patelguda. Customers browse frames, sunglasses and lenses, book an eye test and send an enquiry; they buy by WhatsApp or at a branch, so there is **no online checkout**. Staff manage the catalogue and content in a signed-in staff area.
 
