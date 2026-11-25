@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Add a frame | VS Lens Mart staff area</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="adm-body" data-admin="frames">
+
+<main id="main" class="adm-main">
+  <header class="adm-head">
+    <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/admin">Dashboard</a></li><li><a href="/admin/frames" id="crumb-list">Frames</a></li><li aria-current="page" id="crumb-here">Add a frame</li></ol></nav>
+    <h1 id="title">Add a frame</h1>
+    <p id="status-line"></p>
+  </header>
+
+  <div class="fform" id="fform-wrap">
+    <div id="banners" class="fform" style="gap:12px"></div>
+
+    <form class="fform" id="fform" novalidate>
+      <div class="esummary" id="esummary" role="alert" tabindex="-1" hidden></div>
+
+      <!-- ========== Photos ========== -->
+      <section class="fsec" aria-labelledby="sec-photos" id="photos-sec">
+        <h2 class="fsec__title" id="sec-photos">Photos <span class="ffield__hint" id="photo-count">0 of 5</span></h2>
+        <div class="photos" id="photos"></div>
+        <p class="photo-status" id="photo-status" aria-live="polite"></p>
+        <span class="ferr" id="photos-err" hidden></span>
+        <p class="photo-tip">Plain light background, whole frame in view, no reflections. Product-only photos unless the person gave written permission. The first photo is the cover.</p>
+        <input type="file" id="cam" accept="image/*" capture="environment" hidden>
+        <input type="file" id="pick" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden>
+      </section>
+
+      <!-- ========== Basics ========== -->
+      <section class="fsec" aria-labelledby="sec-basics">
+        <h2 class="fsec__title" id="sec-basics">Basics</h2>
+        <div class="fgrid">
+          <div class="ffield" id="f-code">
+            <label for="code">Frame code</label>
+            <input type="text" id="code" name="code" autocomplete="off" maxlength="10" aria-describedby="code-hint code-err" spellcheck="false">
+            <span class="ffield__hint" id="code-hint">Like VSF-1024 (sunglasses SG-2017). <span class="todo">DUMMY format (C13)</span></span>
+            <span class="ferr" id="code-err" hidden></span>
+          </div>
+          <div class="ffield" id="f-category">
+            <label for="category">Category</label>
+            <select id="category" name="category" aria-describedby="category-err">
+              <option value="">Choose</option>
+              <option>Eyeglasses</option><option>Computer glasses</option><option>Sunglasses</option>
+            </select>
+            <span class="ferr" id="category-err" hidden></span>
+          </div>
+          <div class="ffield" id="f-brand">
+            <label for="brand">Brand</label>
+            <select id="brand" name="brand" aria-describedby="brand-err"></select>
+            <input type="text" id="brand-new" maxlength="40" placeholder="New brand name" aria-label="New brand name" hidden>
+            <span class="ferr" id="brand-err" hidden></span>
+          </div>
+          <div class="ffield" id="f-model">
+            <label for="model">Model</label>
+            <input type="text" id="model" name="model" maxlength="60" autocomplete="off" aria-describedby="model-err">
+            <span class="ferr" id="model-err" hidden></span>
+          </div>
+        </div>
+        <fieldset class="fchips" id="f-gender">
+          <legend>Gender</legend>
+          <div class="chips-pick">
+            <label class="rchoice"><input type="radio" name="gender" value="Men"><span>Men</span></label>
+            <label class="rchoice"><input type="radio" name="gender" value="Women"><span>Women</span></label>
+            <label class="rchoice"><input type="radio" name="gender" value="Unisex"><span>Unisex</span></label>
+            <label class="rchoice"><input type="radio" name="gender" value="Kids"><span>Kids</span></label>
+          </div>
+          <span class="ferr" id="gender-err" hidden></span>
+        </fieldset>
+      </section>
+
+      <!-- ========== Details ========== -->
+      <section class="fsec" aria-labelledby="sec-details">
+        <h2 class="fsec__title" id="sec-details">Details</h2>
+        <div class="fgrid">
+          <div class="ffield" id="f-colour">
+            <label for="colour">Colour</label>
+            <select id="colour" name="colour" aria-describedby="colour-err"></select>
+            <input type="text" id="colour-new" maxlength="30" placeholder="New colour" aria-label="New colour" hidden>
+            <span class="ferr" id="colour-err" hidden></span>
+          </div>
+          <div class="ffield" id="f-shape">
+            <label for="shape">Shape</label>
+            <select id="shape" name="shape" aria-describedby="shape-err">
+              <option value="">Choose</option>
+              <option>Rectangle</option><option>Square</option><option>Round</option><option>Cat-eye</option><option>Aviator</option><option>Wayfarer</option>
+            </select>
+            <span class="ferr" id="shape-err" hidden></span>
+          </div>
+          <div class="ffield">
+            <label for="material">Material <span class="ffield__hint">(optional)</span></label>
+            <select id="material" name="material">
+              <option value="">Choose</option>
+              <option>Acetate</option><option>Metal</option><option>TR90</option><option>Titanium</option><option>O Matter</option>
+            </select>
+          </div>
+          <div class="ffield">
+            <span class="ffield__label" id="size-label">Size in mm <span class="ffield__hint">(optional)</span></span>
+            <div class="size3" role="group" aria-labelledby="size-label">
+              <label>Lens<input type="number" id="size-lens" min="30" max="160" inputmode="numeric"></label>
+              <label>Bridge<input type="number" id="size-bridge" min="0" max="30" inputmode="numeric"></label>
+              <label>Temple<input type="number" id="size-temple" min="100" max="160" inputmode="numeric"></label>
+            </div>
+          </div>
+        </div>
+        <div id="sun-fields" hidden>
+          <fieldset class="fchips">
+            <legend>Lens type <span class="ffield__hint">(sunglasses)</span></legend>
+            <div class="chips-pick">
+              <label class="rchoice"><input type="checkbox" name="lens" value="Polarized"><span>Polarized</span></label>
+              <label class="rchoice"><input type="checkbox" name="lens" value="UV protection"><span>UV protection</span></label>
+              <label class="rchoice"><input type="checkbox" name="lens" value="Tinted"><span>Tinted</span></label>
+              <label class="rchoice"><input type="checkbox" name="lens" value="Power sunglasses"><span>Power sunglasses</span></label>
+            </div>
+          </fieldset>
+          <div class="ffield" style="max-width:24rem">
+            <label for="lens-colour">Lens colour</label>
+            <select id="lens-colour"><option value="">Choose</option><option>Grey</option><option>Green</option><option>Brown</option><option>Gradient blue</option></select>
+          </div>
+          <p class="ffield__hint">Only the labels above. The site adds no protection claims of its own. <span class="todo">DUMMY list (C14)</span></p>
+        </div>
+      </section>
+
+      <!-- ========== Price and stock ========== -->
+      <section class="fsec" aria-labelledby="sec-price">
+        <h2 class="fsec__title" id="sec-price">Price and stock</h2>
+        <div class="ffield" id="f-price" style="max-width:24rem">
+          <label for="price">Price</label>
+          <div class="phone"><span class="phone__pre" aria-hidden="true">₹</span><input type="text" id="price" name="price" inputmode="numeric" maxlength="8" autocomplete="off" aria-describedby="price-hint price-err"></div>
+          <span class="ffield__hint" id="price-hint">Whole rupees, as on the tag.</span>
+          <span class="ferr" id="price-err" hidden></span>
+        </div>
+        <fieldset class="fchips" id="f-where">
+          <legend>Available at</legend>
+          <div class="chips-pick">
+            <label class="rchoice"><input type="radio" name="where" value="Indresham"><span>Indresham</span></label>
+            <label class="rchoice"><input type="radio" name="where" value="Patelguda"><span>Patelguda</span></label>
+            <label class="rchoice"><input type="radio" name="where" value="Both branches"><span>Both</span></label>
+          </div>
+          <span class="ferr" id="where-err" hidden></span>
+        </fieldset>
+        <label class="switch">
+          <span class="switch__text"><b>Sold out</b><span>Stays on the site with a "Sold out" label.</span></span>
+          <input type="checkbox" id="sold" role="switch">
+        </label>
+      </section>
+
+      <!-- ========== Publishing ========== -->
+      <section class="fsec" aria-labelledby="sec-pub">
+        <h2 class="fsec__title" id="sec-pub">On the website</h2>
+        <label class="switch">
+          <span class="switch__text"><b>Visible on the site</b><span id="visible-hint">Turn off to hide it, even after approval.</span></span>
+          <input type="checkbox" id="visible" role="switch" checked>
+        </label>
+      </section>
+
+      <!-- ========== Danger zone (approved frames) ========== -->
+      <div class="danger" id="danger" hidden>
+        <p data-only="admin"><b>Delete this frame</b>Removes it and its photos for good. Staff can only hide frames.</p>
+        <button class="btn btn--outline-dark" type="button" id="delete" data-only="admin"><svg class="icon icon--sm"><use href="#i-trash"/></svg>Delete frame</button>
+        <p data-only="staff"><b>Take it off the site</b>Hides it straight away. Only an admin can delete it.</p>
+        <button class="btn btn--outline-dark" type="button" id="hide" data-only="staff"><svg class="icon icon--sm"><use href="#i-eye"/></svg>Hide from site</button>
+      </div>
+
+      <!-- Spam/duplicate guard not needed: signed-in staff only. Action bar: -->
+      <div class="factions" id="factions">
+        <span class="factions__note" id="autosave" aria-live="polite"></span>
+      </div>
+      <div class="mock-panel mock-only" role="group" aria-label="Mockup: open other states">
+        <span>Open:</span>
+        <a href="admin-frame.html" style="font-weight:600;color:inherit">New frame</a>
+        <a href="admin-frame.html?id=VSF-1031" style="font-weight:600;color:inherit">Draft to review</a>
+        <a href="admin-frame.html?id=VSF-1030" style="font-weight:600;color:inherit">Sent back</a>
+        <a href="admin-frame.html?id=VSF-1024" style="font-weight:600;color:inherit">Approved frame</a>
+        <a href="admin-frame.html?category=sunglasses" style="font-weight:600;color:inherit">New sunglasses</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- ========== After saving ========== -->
+  <section class="bdone" id="done" tabindex="-1" aria-labelledby="done-title" hidden style="margin-top:0">
+    <span class="bdone__tick" aria-hidden="true">✓</span>
+    <h2 id="done-title"></h2>
+    <p id="done-text"></p>
+    <div class="bdone__actions">
+      <a class="btn btn--primary" id="again" href="admin-frame.html?keep=1"><svg class="icon icon--sm"><use href="#i-plus"/></svg>Add another frame</a>
+      <a class="btn btn--outline-dark" href="/admin">Back to dashboard</a>
+    </div>
+    <p class="mock-only"><span class="todo">Mockup: nothing is saved. Live: a server action (Zod) writes the frame; photos go to the Storage bucket "frames"; the database refuses "approved" from staff</span></p>
+  </section>
+
+  <!-- Dialogs -->
+  <dialog class="adm-dialog" id="dlg-back" aria-labelledby="back-title">
+    <form method="dialog" id="back-form">
+      <h2 id="back-title">Send back to staff</h2>
+      <p>Say what to fix. They'll see your note on their dashboard.</p>
+      <div class="ffield" id="f-note">
+        <label for="note">Note</label>
+        <textarea id="note" maxlength="300" placeholder="For example: please add a side photo" aria-describedby="note-err"></textarea>
+        <span class="ferr" id="note-err" hidden></span>
+      </div>
+      <div class="adm-dialog__actions">
+        <button class="btn btn--outline-dark" type="button" data-close>Cancel</button>
+        <button class="btn btn--primary" type="submit" value="send">Send back</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog class="adm-dialog" id="dlg-confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-text"></p>
+    <div class="adm-dialog__actions">
+      <button class="btn btn--outline-dark" type="button" data-close>Cancel</button>
+      <button class="btn btn--primary" type="button" id="confirm-ok"></button>
+    </div>
+  </dialog>
+</main>
+
+<script src="admin.js"></script>
+<script src="frames-data.js"></script>
+<script>
+/* Add / edit / review a frame (mockup). Spec: Requirements_Admin.md section 6.
+   Modes: new (no id) · draft (id of a DUMMY draft: review for admin, edit for staff) · approved (id of a live frame).
+   Live: a server action with Zod validation; photos resized in the browser, checked again on the server,
+   stored in the "frames" bucket. Everything is DUMMY (C4, C5, C13, C14, C22). */
+(() => {
+  const A = VSLM_ADMIN, V = VSLM, $ = s => document.querySelector(s);
+  const admin = A.role === 'admin';
+  const MAX = 5, MAX_BYTES = 10 * 1024 * 1024, LONG_EDGE = 1600;
+  const TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  const PHOTO_TYPES = ['Front', 'Side', 'Close-up', 'Model wearing it'];
+  const q = new URLSearchParams(location.search);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- Which frame, which mode ---------- */
+  const draft = A.DRAFTS.find(d => d.code === q.get('id'));
+  const live = V.ALL.find(f => f.code === q.get('id'));
+  const frame = draft || live || null;
+  const mode = draft ? 'draft' : live ? 'approved' : 'new';
+  let status = draft ? draft.status : live ? 'approved' : 'draft';
+  const sunNew = mode === 'new' && q.get('category') === 'sunglasses';
+  const isSunFrame = (frame && frame.category === 'Sunglasses') || sunNew;
+
+  /* ---------- Lookup lists (live: brands and colours tables) ---------- */
+  const uniq = k => [...new Set(V.ALL.map(f => f[k]).concat(A.DRAFTS.map(d => d[k])))].sort();
+  const fillSelect = (sel, list, addLabel) => {
+    sel.innerHTML = `<option value="">Choose</option>${list.map(v => `<option>${esc(v)}</option>`).join('')}<option value="__new">+ ${addLabel}</option>`;
+  };
+  fillSelect($('#brand'), uniq('brand'), 'Add a new brand');
+  fillSelect($('#colour'), uniq('colour'), 'Add a new colour');
+  [['#brand', '#brand-new'], ['#colour', '#colour-new']].forEach(([s, n]) => $(s).addEventListener('change', () => {
+    $(n).hidden = $(s).value !== '__new';
+    if (!$(n).hidden) $(n).focus();
+  }));
+  $('#category').addEventListener('change', () => { $('#sun-fields').hidden = $('#category').value !== 'Sunglasses'; });
+
+  /* ---------- Photos ---------- */
+  let photos = [];        // { id, url, label, before, after, type, consent, progress, note }
+  let removed = null;     // last removed photo, for Undo
+  let nextId = 1;
+  const kb = n => n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`;
+  function renderPhotos() {
+    const tiles = photos.map((p, i) => `
+      <div class="ptile${p.error ? ' has-error' : ''}" data-pid="${p.id}">
+        <div class="ptile__img">
+          ${p.url ? `<img src="${p.url}" alt="${esc(p.type)} photo ${i + 1}">` : `<div class="ph">${p.label}</div>`}
+          ${i === 0 ? '<span class="adm-badge adm-badge--gold ptile__cover">Cover</span>' : ''}
+        </div>
+        ${p.progress < 100 ? `<progress max="100" value="${p.progress}" aria-label="Uploading photo ${i + 1}">${p.progress}%</progress>` : ''}
+        ${p.before ? `<span class="ptile__size">${kb(p.before)} → ${kb(p.after)}${p.note ? ` · ${p.note}` : ''}</span>` : p.note ? `<span class="ptile__size">${p.note}</span>` : ''}
+        <select data-ptype aria-label="Type of photo ${i + 1}">${PHOTO_TYPES.map(t => `<option ${t === p.type ? 'selected' : ''}>${t}</option>`).join('')}</select>
+        ${p.type === 'Model wearing it' ? `<label class="consent"><input type="checkbox" data-pconsent ${p.consent ? 'checked' : ''}><span>This person gave written permission to show this photo</span></label>` : ''}
+        <div class="ptile__tools">
+          <button type="button" data-pmove="-1" aria-label="Move photo ${i + 1} earlier" ${i === 0 ? 'disabled' : ''}><svg class="icon"><use href="#i-left"/></svg></button>
+          <button type="button" data-premove aria-label="Remove photo ${i + 1}"><svg class="icon"><use href="#i-trash"/></svg></button>
+          <button type="button" data-pmove="1" aria-label="Move photo ${i + 1} later" ${i === photos.length - 1 ? 'disabled' : ''}><svg class="icon"><use href="#i-right"/></svg></button>
+        </div>
+      </div>`).join('');
+    const add = photos.length < MAX ? `
+      <div class="padd">
+        <button class="btn btn--primary" type="button" id="take"><svg class="icon icon--sm"><use href="#i-camera"/></svg>Take photo</button>
+        <button class="btn btn--outline-dark" type="button" id="choose"><svg class="icon icon--sm"><use href="#i-upload"/></svg>Choose photos</button>
+        <p>JPG, PNG, WebP or HEIC, up to 10 MB</p>
+      </div>` : '';
+    $('#photos').innerHTML = tiles + add;
+    $('#photo-count').textContent = `${photos.length} of ${MAX}`;
+  }
+  const status$ = $('#photo-status');
+  const say = html => { status$.innerHTML = html; };
+
+  // Resize to at most 1600 px and convert to WebP in the browser, so uploads are quick on mobile data
+  async function shrink(file) {
+    if (/hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name)) return { note: 'HEIC: converted on upload' };
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, LONG_EDGE / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas');
+    c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.82));
+    return { url: URL.createObjectURL(blob), before: file.size, after: blob.size };
+  }
+  async function addFiles(files) {
+    const errors = [];
+    for (const file of files) {
+      if (photos.length >= MAX) { errors.push(`Only ${MAX} photos per frame. "${esc(file.name)}" wasn't added.`); continue; }
+      const okType = TYPES.includes(file.type) || /\.(jpe?g|png|webp|hei[cf])$/i.test(file.name);
+      if (!okType) { errors.push(`"${esc(file.name)}" isn't a photo. Use JPG, PNG or WebP.`); continue; }
+      if (file.size > MAX_BYTES) { errors.push(`"${esc(file.name)}" is too large (max 10 MB).`); continue; }
+      let out;
+      try { out = await shrink(file); } catch (_) { errors.push(`"${esc(file.name)}" couldn't be read as a photo.`); continue; }
+      const p = { id: nextId++, type: photos.length === 0 ? 'Front' : 'Side', consent: false, progress: 0, ...out };
+      photos.push(p);
+      fakeUpload(p);
+    }
+    renderPhotos(); dirty();
+    setErr('photos', errors.join(' '));
+    if (!errors.length) say(`${photos.length} of ${MAX} photos added.`);
+  }
+  // Mockup: a short upload progress bar (live: upload to Storage with progress events)
+  function fakeUpload(p) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = () => {
+      p.progress = Math.min(100, p.progress + (reduce ? 100 : 25));
+      const bar = document.querySelector(`[data-pid="${p.id}"] progress`);
+      if (p.progress >= 100) return renderPhotos();
+      if (bar) bar.value = p.progress;
+      setTimeout(step, 180);
+    };
+    setTimeout(step, 180);
+  }
+  $('#cam').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = ''; });
+  $('#pick').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = ''; });
+  $('#photos').addEventListener('click', e => {
+    if (e.target.closest('#take')) return $('#cam').click();
+    if (e.target.closest('#choose')) return $('#pick').click();
+    const tile = e.target.closest('[data-pid]');
+    if (!tile) return;
+    const i = photos.findIndex(p => p.id === +tile.dataset.pid);
+    const mv = e.target.closest('[data-pmove]');
+    if (mv && !mv.disabled) {
+      const j = i + +mv.dataset.pmove;
+      [photos[i], photos[j]] = [photos[j], photos[i]];
+      renderPhotos(); dirty();
+      say(`Photo moved to position ${j + 1}${j === 0 ? ' (cover)' : ''}.`);
+      // Keep focus on the moved photo: same arrow if it can move further, else the other one
+      const t = document.querySelector(`[data-pid="${photos[j].id}"]`);
+      (t.querySelector(`[data-pmove="${mv.dataset.pmove}"]:not(:disabled)`) || t.querySelector('[data-pmove]:not(:disabled)') || t.querySelector('select')).focus();
+    }
+    if (e.target.closest('[data-premove]')) {
+      removed = { p: photos[i], i };
+      photos.splice(i, 1);
+      renderPhotos(); dirty();
+      say('Photo removed. <button class="clear-all" type="button" id="undo">Undo</button>');
+      $('#undo').focus();
+    }
+  });
+  $('#photos').addEventListener('change', e => {
+    const tile = e.target.closest('[data-pid]');
+    if (!tile) return;
+    const p = photos.find(x => x.id === +tile.dataset.pid);
+    if (e.target.matches('[data-ptype]')) { p.type = e.target.value; renderPhotos(); }
+    if (e.target.matches('[data-pconsent]')) p.consent = e.target.checked;
+    dirty();
+  });
+  status$.addEventListener('click', e => {
+    if (!e.target.closest('#undo') || !removed) return;
+    photos.splice(Math.min(removed.i, photos.length), 0, removed.p);
+    removed = null; renderPhotos(); say('Photo restored.'); dirty();
+  });
+
+  /* ---------- Fill the form ---------- */
+  const setRadio = (name, v) => { const r = document.querySelector(`input[name="${name}"][value="${v}"]`); if (r) r.checked = true; };
+  function fill(f) {
+    $('#code').value = f.code || '';
+    $('#category').value = f.category || '';
+    $('#brand').value = f.brand || ''; $('#model').value = f.model || '';
+    setRadio('gender', f.gender);
+    $('#colour').value = f.colour || ''; $('#shape').value = f.shape || ''; $('#material').value = f.material || '';
+    const [l, b, t] = (f.size || '').split('-');
+    $('#size-lens').value = l || ''; $('#size-bridge').value = b || ''; $('#size-temple').value = t || '';
+    $('#price').value = f.price || '';
+    setRadio('where', f.where);
+    $('#sold').checked = !!f.sold;
+    (f.lens || []).forEach(v => setRadio('lens', v));
+    $('#lens-colour').value = f.lensColour || '';
+    $('#sun-fields').hidden = $('#category').value !== 'Sunglasses';
+  }
+  if (frame) {
+    fill(frame);
+    const n = frame.photos || 3;
+    photos = Array.from({ length: n }, (_, i) => ({ id: nextId++, label: `${PHOTO_TYPES[Math.min(i, 2)]} photo<br>TODO (client)`, type: PHOTO_TYPES[Math.min(i, 2)], progress: 100 }));
+  } else {
+    setRadio('where', A.user.branch);
+    if (sunNew) $('#category').value = 'Sunglasses';
+    $('#sun-fields').hidden = !sunNew;
+    // "Add another frame" keeps brand, category, gender and branch
+    if (q.get('keep')) {
+      try { const k = JSON.parse(sessionStorage.getItem('vslm-admin-keep')) || {}; fill({ ...k, code: '', model: '', price: '' }); } catch (_) {}
+    }
+  }
+  renderPhotos();
+
+  /* ---------- Title, status, banners ---------- */
+  const noun = isSunFrame ? 'sunglasses' : 'frame';
+  const name = frame ? `${frame.brand} ${frame.model}` : '';
+  const title = mode === 'new' ? `Add ${isSunFrame ? 'sunglasses' : 'a frame'}`
+    : mode === 'draft' && admin && status === 'waiting' ? `Review ${frame.code}` : `Edit ${frame.code}`;
+  $('#title').textContent = title;
+  $('#crumb-here').textContent = title;
+  document.title = `${title} | VS Lens Mart staff area`;
+  if (isSunFrame) { $('#crumb-list').textContent = 'Sunglasses'; $('#crumb-list').href = '/admin/sunglasses'; }
+  $('#status-line').innerHTML = `${A.badge(status)} ${name ? `<span style="margin-left:8px">${esc(name)}</span>` : ''}${live ? ` · <a href="${V.url(live)}">See it on the site</a>` : ''}`;
+
+  const banners = [];
+  if (mode === 'draft' && status === 'waiting') banners.push(admin
+    ? `<div class="fbanner"><b>Added by ${frame.by}, ${frame.ago}.</b>Check the photos and details, fix anything small yourself, then approve. It goes on the site straight away.</div>`
+    : `<div class="fbanner"><b>Waiting for an admin to approve.</b>You can still make changes; the admin sees the latest version.</div>`);
+  if (mode === 'draft' && status === 'sent-back') banners.push(`<div class="fbanner"><b>Sent back by the admin:</b>${esc(frame.note)}</div>`);
+  if (mode === 'approved') banners.push(`<div class="fbanner"><b>This ${noun} is live.</b>Changes go on the site as soon as you save, and show in "Recent changes". <span class="todo">DUMMY rule (C22)</span></div>`);
+  $('#banners').innerHTML = banners.join('');
+  $('#banners').hidden = !banners.length;
+  $('#danger').hidden = mode !== 'approved';
+
+  /* ---------- Action bar: depends on mode and role ---------- */
+  const BTN = {
+    draft: '<button class="btn btn--outline-dark" type="button" data-act="draft">Save as draft</button>',
+    send: '<button class="btn btn--primary" type="button" data-act="send">Send for approval</button>',
+    publish: '<button class="btn btn--primary" type="button" data-act="publish">Save and publish</button>',
+    back: '<button class="btn btn--outline-dark" type="button" data-act="back">Send back with a note</button>',
+    approve: '<button class="btn btn--primary" type="button" data-act="approve"><svg class="icon icon--sm"><use href="#i-check"/></svg>Approve and publish</button>',
+    save: '<button class="btn btn--primary" type="button" data-act="save">Save changes</button>',
+  };
+  const acts = mode === 'approved' ? ['save']
+    : mode === 'draft' && status === 'waiting' ? (admin ? ['back', 'approve'] : ['save'])
+    : admin ? ['draft', 'publish'] : ['draft', 'send'];
+  $('#factions').insertAdjacentHTML('beforeend', acts.map(a => BTN[a]).join(''));
+
+  /* ---------- Validation (the server repeats every check) ---------- */
+  function setErr(field, msg) {
+    const err = $(`#${field}-err`), box = $(`#f-${field}`) || err.parentElement;
+    box.classList.toggle('has-error', !!msg);
+    err.hidden = !msg; err.innerHTML = msg || '';
+    box.querySelectorAll(':scope > input, :scope > select, .phone input').forEach(i => i.setAttribute('aria-invalid', String(!!msg)));
+  }
+  const codeOwner = code => code && code !== frame?.code && (V.ALL.find(f => f.code === code) || A.DRAFTS.find(d => d.code === code));
+  function checkCode() {
+    const v = $('#code').value.trim().toUpperCase();
+    $('#code').value = v;
+    const owner = codeOwner(v);
+    const msg = !v ? 'Enter the frame code' : !/^[A-Z]{2,3}-\d{4}$/.test(v) ? 'Use letters, a dash and 4 numbers, like VSF-1024'
+      : owner ? `Code already used by ${owner.brand} ${owner.model}` : '';
+    return msg;
+  }
+  $('#code').addEventListener('blur', () => { if ($('#code').value) setErr('code', checkCode()); });
+  $('#price').addEventListener('input', e => {
+    const n = e.target.value.replace(/\D/g, '');
+    e.target.value = n;
+    $('#price-hint').textContent = n ? `Shown as ${V.rupees(+n)}` : 'Whole rupees, as on the tag.';
+  });
+
+  function validate(full) {
+    const errs = [];
+    const check = (field, target, msg) => { setErr(field, msg); if (msg) errs.push([msg, target]); };
+    check('code', 'code', checkCode());
+    if (!full) return errs;   // a draft only needs its code, so it can be found again
+    const pending = photos.some(p => p.progress < 100);
+    const noConsent = photos.filter(p => p.type === 'Model wearing it' && !p.consent);
+    check('photos', 'photos-sec', !photos.length ? 'Add at least one photo' : pending ? 'Wait for the photos to finish uploading'
+      : noConsent.length ? 'Tick the permission box on every "Model wearing it" photo, or change its type' : '');
+    document.querySelectorAll('.ptile').forEach(t => {
+      const p = photos.find(x => x.id === +t.dataset.pid);
+      t.classList.toggle('has-error', p.type === 'Model wearing it' && !p.consent);
+    });
+    check('category', 'category', $('#category').value ? '' : 'Choose a category');
+    const brand = $('#brand').value === '__new' ? $('#brand-new').value.trim() : $('#brand').value;
+    check('brand', 'brand', brand ? '' : 'Choose or add a brand');
+    check('model', 'model', $('#model').value.trim() ? '' : 'Enter the model');
+    check('gender', 'f-gender', document.querySelector('input[name="gender"]:checked') ? '' : 'Choose who it is for');
+    const colour = $('#colour').value === '__new' ? $('#colour-new').value.trim() : $('#colour').value;
+    check('colour', 'colour', colour ? '' : 'Choose or add a colour');
+    check('shape', 'shape', $('#shape').value ? '' : 'Choose a shape');
+    const price = +$('#price').value;
+    check('price', 'price', price >= 1 && price <= 100000 ? '' : 'Enter the price in rupees (1 to 1,00,000)');
+    check('where', 'f-where', document.querySelector('input[name="where"]:checked') ? '' : 'Choose where it is available');
+    return errs;
+  }
+  function showSummary(errs) {
+    const box = $('#esummary');
+    box.innerHTML = `<h2>Please check ${errs.length === 1 ? 'one thing' : `${errs.length} things`}</h2><ul>${errs.map(([m, t]) => `<li><a href="#${t}">${m}</a></li>`).join('')}</ul>`;
+    box.hidden = false; box.focus();
+  }
+
+  /* ---------- Unsaved changes: autosave on this device + ask before leaving ---------- */
+  const DRAFT_KEY = 'vslm-admin-frame-draft';
+  let isDirty = false, saveTimer;
+  const fieldIds = ['code', 'category', 'brand', 'brand-new', 'model', 'colour', 'colour-new', 'shape', 'material', 'size-lens', 'size-bridge', 'size-temple', 'price', 'lens-colour'];
+  function snapshot() {
+    const o = {}; fieldIds.forEach(id => { o[id] = $(`#${id}`).value; });
+    ['gender', 'where'].forEach(n => { o[n] = document.querySelector(`input[name="${n}"]:checked`)?.value || ''; });
+    o.lens = [...document.querySelectorAll('input[name="lens"]:checked')].map(i => i.value);
+    o.sold = $('#sold').checked; o.visible = $('#visible').checked;
+    o.at = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return o;
+  }
+  function restore(o) {
+    fieldIds.forEach(id => { $(`#${id}`).value = o[id] || ''; });
+    $('#brand-new').hidden = $('#brand').value !== '__new'; $('#colour-new').hidden = $('#colour').value !== '__new';
+    setRadio('gender', o.gender); setRadio('where', o.where);
+    (o.lens || []).forEach(v => setRadio('lens', v));
+    $('#sold').checked = !!o.sold; $('#visible').checked = o.visible !== false;
+    $('#sun-fields').hidden = $('#category').value !== 'Sunglasses';
+  }
+  function dirty() {
+    isDirty = true;
+    if (mode !== 'new') return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const o = snapshot();
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(o)); } catch (_) {}
+      $('#autosave').textContent = `Saved on this device at ${o.at} (photos not included)`;
+    }, 800);
+  }
+  $('#fform').addEventListener('input', e => { if (!e.target.closest('#photos')) dirty(); });
+  $('#fform').addEventListener('change', e => { if (!e.target.closest('#photos')) dirty(); });
+  if (mode === 'new' && !q.get('keep')) {
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (_) {}
+    if (saved && (saved.code || saved.model || saved.price)) {
+      $('#banners').hidden = false;
+      $('#banners').insertAdjacentHTML('afterbegin', `<div class="fbanner" id="restore-banner"><b>You have an unfinished ${noun} from ${saved.at}${saved.code ? ` (${esc(saved.code)})` : ''}.</b>
+        <div class="fbanner__actions"><button class="btn btn--sm btn--primary" type="button" id="restore">Continue it</button><button class="btn btn--sm btn--outline-dark" type="button" id="discard">Start fresh</button></div></div>`);
+      $('#restore').addEventListener('click', () => { restore(saved); $('#restore-banner').remove(); A.toast('Restored. Add the photos again'); isDirty = true; });
+      $('#discard').addEventListener('click', () => { try { localStorage.removeItem(DRAFT_KEY); } catch (_) {} $('#restore-banner').remove(); });
+    }
+  }
+  addEventListener('beforeunload', e => { if (isDirty) { e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- Dialogs ---------- */
+  const dlgConfirm = $('#dlg-confirm');
+  let onConfirm = null;
+  function ask(title, text, ok, fn) {
+    $('#confirm-title').textContent = title; $('#confirm-text').textContent = text; $('#confirm-ok').textContent = ok;
+    onConfirm = fn; dlgConfirm.showModal();
+  }
+  $('#confirm-ok').addEventListener('click', () => { dlgConfirm.close(); onConfirm?.(); });
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  A.guard = (go, stay) => {
+    if (!isDirty) return go();
+    ask('Leave without saving?', 'Your changes on this page will be lost.', 'Leave', () => { isDirty = false; go(); });
+    dlgConfirm.addEventListener('close', () => { if (isDirty) stay(); }, { once: true });
+  };
+
+  /* ---------- Actions ---------- */
+  const DONE = {
+    draft: ['Saved as draft', `It isn't on the site. Finish it and send it for approval when you're ready.`],
+    send: ['Sent for approval', `An admin will check it. You'll see it on your dashboard if it's sent back.`],
+    publish: ['Published', `It's on the site now.`],
+    approve: ['Approved and published', `It's on the site now. The staff member sees it as approved.`],
+    back: ['Sent back', `${frame?.by?.split(' · ')[0] || 'The staff member'} will see your note on their dashboard.`],
+    hidden: ['Hidden from the site', 'Customers no longer see it. It stays in the staff area.'],
+    save: ['Changes saved', mode === 'approved' ? 'They are on the site now.' : 'The admin sees the latest version.'],
+  };
+  function finish(act) {
+    isDirty = false;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (_) {}
+    const keep = snapshot();
+    try { sessionStorage.setItem('vslm-admin-keep', JSON.stringify({ brand: keep.brand, category: keep.category, gender: keep.gender, where: keep.where })); } catch (_) {}
+    const code = $('#code').value;
+    $('#done-title').textContent = DONE[act][0];
+    $('#done-text').textContent = `${code ? code + '. ' : ''}${DONE[act][1]}`;
+    $('#again').innerHTML = `<svg class="icon icon--sm"><use href="#i-plus"/></svg>Add another ${isSunFrame ? 'pair of sunglasses' : 'frame'}`;
+    $('#again').href = `admin-frame.html?keep=1${isSunFrame ? '&category=sunglasses' : ''}`;
+    $('#fform-wrap').hidden = true; $('#done').hidden = false; $('#done').focus();
+    scrollTo({ top: 0 });
+    A.toast(DONE[act][0]);
+  }
+  $('#factions').addEventListener('click', e => {
+    const b = e.target.closest('[data-act]');
+    if (!b) return;
+    const act = b.dataset.act;
+    const errs = validate(act !== 'draft');
+    if (errs.length) return showSummary(errs);
+    $('#esummary').hidden = true;
+    if (act === 'back') { $('#note').value = ''; setErr('note', ''); return $('#dlg-back').showModal(); }
+    b.setAttribute('aria-busy', 'true'); b.disabled = true;
+    setTimeout(() => { b.removeAttribute('aria-busy'); b.disabled = false; finish(act); }, 600);
+  });
+  $('#back-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!$('#note').value.trim()) { setErr('note', 'Write what needs fixing'); return $('#note').focus(); }
+    $('#dlg-back').close();
+    finish('back');
+  });
+  $('#delete').addEventListener('click', () => ask(`Delete ${frame.code} permanently?`, 'Its photos are deleted too. This can\'t be undone.', 'Delete frame', () => {
+    isDirty = false;
+    A.toast(`${frame.code} deleted (mockup: nothing removed)`);
+    setTimeout(() => { location.href = 'admin.html'; }, 900);
+  }));
+  $('#hide').addEventListener('click', () => ask(`Hide ${frame.code} from the site?`, 'Customers stop seeing it straight away. An admin can show it again or delete it.', 'Hide from site', () => {
+    $('#visible').checked = false;
+    finish('hidden');
+  }));
+})();
+</script>
+</body>
+</html>

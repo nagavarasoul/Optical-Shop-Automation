@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sunglasses | VS Lens Mart, Indresham and Patelguda</title>
+<meta name="description" content="Browse sunglasses at VS Lens Mart with exact prices: polarized, UV protection, tinted and power sunglasses. Enquire on WhatsApp or visit a branch.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Cards fade in when a page of results loads (300–500 ms); none with reduced motion */
+  @media (prefers-reduced-motion: no-preference) {
+    .listing .fcard { animation: card-in 360ms var(--ease-out) both; }
+    @keyframes card-in { from { opacity: 0; transform: translateY(8px); } }
+  }
+</style>
+</head>
+<body data-page="sunglasses">
+
+<main id="main">
+  <div class="container">
+    <nav aria-label="Breadcrumb" style="padding-top:24px"><ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Sunglasses</li></ol></nav>
+
+    <header class="page-head">
+      <h1>Sunglasses <span class="page-head__count" id="count" aria-live="polite">16 pairs</span></h1>
+      <p>Sunglasses for every face, at honest prices. Ask about power sunglasses made to your prescription.</p>
+      <div class="quick-chips" role="group" aria-label="Shop for">
+        <button class="chip-toggle" type="button" data-quick="Men" aria-pressed="false">Men</button>
+        <button class="chip-toggle" type="button" data-quick="Women" aria-pressed="false">Women</button>
+        <button class="chip-toggle" type="button" data-quick="Kids" aria-pressed="false">Kids</button>
+        <button class="chip-toggle" type="button" data-quick="Unisex" aria-pressed="false">Unisex</button>
+      </div>
+      <p class="mock-only"><span class="todo">DUMMY sunglasses, brands, prices and lens types (C5, C14). Live: approved, active sunglasses only; filter options come from those pairs</span></p>
+    </header>
+
+    <div class="listing">
+      <!-- Filters: sidebar on desktop, full-height panel below 1180px -->
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="filters__head">
+          <h2>Filters</h2>
+          <button class="icon-btn" type="button" id="filters-close" aria-label="Close filters"><svg class="icon icon--lg"><use href="#i-x"/></svg></button>
+        </div>
+        <form class="filters__body" id="filter-form" onsubmit="return false">
+          <div id="filter-groups"></div>
+        </form>
+        <div class="filters__foot">
+          <button class="btn btn--outline-dark" type="button" id="filters-clear">Clear</button>
+          <button class="btn btn--primary" type="button" id="filters-apply">Show 16 pairs</button>
+        </div>
+      </aside>
+
+      <section aria-label="Results">
+        <div class="toolbar">
+          <button class="btn btn--outline-dark filters-btn" type="button" id="filters-open" aria-controls="filters" aria-expanded="false"><svg class="icon icon--sm"><use href="#i-adjust"/></svg>Filters <span id="filters-n"></span></button>
+          <div class="toolbar__chips" id="active-chips" aria-label="Active filters"></div>
+          <button class="saved-toggle" type="button" id="saved" aria-pressed="false"><svg class="icon"><use href="#i-heart"/></svg><span>Saved (<span id="saved-n">0</span>)</span></button>
+          <label class="sort"><span>Sort</span>
+            <select id="sort" aria-label="Sort sunglasses">
+              <option value="new">Newest</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="frames-row" id="grid"></div>
+        <div id="empty" hidden></div>
+        <div class="results-foot" id="results-foot"></div>
+      </section>
+    </div>
+  </div>
+
+  <section class="help-band" aria-labelledby="help-title">
+    <div class="container help-band__inner">
+      <div>
+        <h2 id="help-title">Need power sunglasses?</h2>
+        <p>We make them to your prescription. Book an eye test, or ask us on WhatsApp.</p>
+      </div>
+      <div class="help-band__actions">
+        <button class="btn btn--primary" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"><svg class="icon icon--sm"><use href="#i-wa"/></svg>Ask on WhatsApp</button>
+        <a class="btn btn--outline" href="/book-eye-test">Book an eye test</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="site.js"></script>
+<script src="frames-data.js"></script>
+<script src="listing.js"></script>
+<script>
+  VSLM_LISTING({
+    items: VSLM.SUNGLASSES,
+    groups: ['gender', 'lens', 'brand', 'price', 'colour', 'shape'],   // no Category: everything here is sunglasses
+    tiers: { everyday: ['0-999', '1000-2999'], branded: ['3000-4999', '5000+'] },
+    noun: n => `${n} pair${n === 1 ? '' : 's'}`,
+    plural: 'sunglasses',
+    filterNote: 'TODO (client): confirm shapes and lens types stocked, and whether every pair has UV protection',
+  });
+</script>
+</body>
+</html>

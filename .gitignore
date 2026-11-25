@@ -1,0 +1,37 @@
+# Personal Claude notes (plan section 6)
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Secrets - never commit
+.env
+.env.*
+!.env.example
+
+# Next.js / Node
+node_modules/
+coverage/
+*.pem
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Playwright
+tests/.auth/
+test-results/
+playwright-report/
+playwright/.cache/
+
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+
+# Local photo uploads (dev data, never committed)
+uploads/
+# DUMMY C12 hero photos (AI-generated, development only, never committed or deployed)
+public/dummy/

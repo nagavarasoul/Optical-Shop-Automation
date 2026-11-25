@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lenses | All branded lenses at VS Lens Mart</title>
+<meta name="description" content="All branded spectacle lenses at VS Lens Mart: single vision, bifocal and progressive, fitted in store at Indresham and Patelguda after an eye test.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="lenses">
+
+<main id="main">
+
+  <!-- ========== 1. Page hero ========== -->
+  <section class="hero hero--page" aria-labelledby="lenses-title">
+    <div class="hero__media"><div class="ph ph--dark">Lens display or fitting photo<br>TODO (client)</div></div>
+    <div class="container hero__inner">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Lenses</li></ol></nav>
+      <p class="eyebrow"><span>LENSES</span></p>
+      <h1 class="hero__title" id="lenses-title">All branded lenses, <span class="gold">fitted in store.</span></h1>
+      <p class="hero__sub">Single vision, bifocal and progressive lenses from the brands you trust. We test your eyes, explain your options and fit your lenses at the branch.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/book-eye-test">Book an eye test</a>
+        <button class="btn btn--outline" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"><svg class="icon icon--sm"><use href="#i-wa"/></svg>Ask on WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2. Lens types ========== -->
+  <section class="section section--white" aria-labelledby="types-title" id="spectacle">
+    <div class="container reveal">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Spectacle lenses</p>
+          <h2 class="section__title" id="types-title">Which lens is which?</h2>
+        </div>
+      </div>
+      <div class="ltypes" id="ltypes"></div>
+      <p class="mock-only" style="margin-top:16px"><span class="todo">TODO (client): confirm blue-cut and photochromic. Live: a type with no active lenses is hidden. Contact lenses, reading glasses and care products stay off until confirmed</span></p>
+    </div>
+  </section>
+
+  <!-- ========== 3. How we choose your lens ========== -->
+  <section class="section" aria-labelledby="how-title">
+    <div class="container reveal">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Not sure which lens?</p>
+          <h2 class="section__title" id="how-title">How we choose your lens</h2>
+        </div>
+      </div>
+      <ol class="steps-row">
+        <li><h3>Eye test</h3><p>We check your eyes at the branch. <a href="/book-eye-test">Book a time</a></p></li>
+        <li><h3>Your options</h3><p>We explain lens types, brands and prices for your power and daily use.</p></li>
+        <li><h3>Fitting</h3><p>We fit your lenses in store. Spherical powers are fitted while you wait.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========== 4. Lens catalogue (DB: lenses) ========== -->
+  <section class="section section--white" aria-labelledby="catalogue-title" id="catalogue">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Lens catalogue</p>
+          <h2 class="section__title" id="catalogue-title">Lenses we fit</h2>
+        </div>
+      </div>
+      <p class="mock-only" style="margin-bottom:16px"><span class="todo">DUMMY lenses, features and prices (C6, C16). Live: active lenses from admin; a price shows only if staff enter one</span></p>
+      <div class="chipbar">
+        <div class="chipbar__row" role="group" aria-label="Lens type"><span class="chipbar__label">Type</span><span id="type-chips" style="display:contents"></span></div>
+        <div class="chipbar__row" role="group" aria-label="Brand"><span class="chipbar__label">Brand</span><span id="brand-chips" style="display:contents"></span></div>
+        <div class="chipbar__meta"><span id="lens-count" aria-live="polite"></span><button class="clear-all" type="button" id="lens-clear" hidden>Clear</button></div>
+      </div>
+      <div class="lens-grid" id="lens-grid"></div>
+      <div id="lens-empty" hidden></div>
+    </div>
+  </section>
+
+  <!-- ========== 5. Brands ========== -->
+  <section class="section" aria-labelledby="brands-title" id="brands">
+    <div class="container reveal">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Brands</p>
+          <h2 class="section__title" id="brands-title">All branded lenses available</h2>
+        </div>
+      </div>
+      <div class="brand-tiles" id="brand-tiles"></div>
+      <p class="mock-only" style="margin-top:16px"><span class="todo">DUMMY brands (C6). TODO (client): the brands you stock (WhatsApp Q11 says "All branded"). Logos only with permission</span></p>
+    </div>
+  </section>
+
+  <!-- ========== 6. Instant lens fitting ========== -->
+  <section class="section section--navy" aria-labelledby="fit-title">
+    <div class="container camp-band reveal">
+      <div>
+        <h2 id="fit-title">Instant lens fitting</h2>
+        <p>Spherical powers fitted while you wait, at both branches. For other powers we'll tell you when your glasses will be ready.</p>
+      </div>
+      <a class="link-arrow" href="/contact#branches">Find a branch <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <!-- ========== 7. Call to action ========== -->
+  <section class="book-band" aria-labelledby="cta-title">
+    <div class="container book-band__inner">
+      <div>
+        <h2 id="cta-title">Not sure which lens you need?</h2>
+        <p>An eye test tells us your power. Then we'll show you the right lenses for your eyes and your budget.</p>
+      </div>
+      <div class="hero__actions">
+        <a class="btn btn--navy" href="/book-eye-test">Book an eye test</a>
+        <button class="btn btn--outline-dark" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"><svg class="icon icon--sm"><use href="#i-wa"/></svg>Ask on WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="site.js"></script>
+<script>
+/* Lenses page (mockup). Spec: docs/requirements/Requirements_Lenses.md.
+   Live: lenses come from the database `lenses` table (active rows only). Everything here is DUMMY (C6, C16). */
+(() => {
+  // Lens types in menu order. `id` matches the mega-menu links (/lenses?type=<id>).
+  const TYPES = [
+    { id: 'single-vision', name: 'Single vision', icon: 'i-eye', text: 'One power across the whole lens, for distance or for reading.' },
+    { id: 'bifocal', name: 'Bifocal', icon: 'i-lens', text: 'Two powers in one lens: distance on top, reading below.' },
+    { id: 'progressive', name: 'Progressive', icon: 'i-adjust', text: 'Distance, middle and reading powers in one lens, with no visible line.' },
+    { id: 'blue-cut', name: 'Blue-cut / computer', icon: 'i-shield', text: 'Lenses with a blue-light filtering coating, often chosen for long screen work.' },
+    { id: 'photochromic', name: 'Photochromic', icon: 'i-sun', text: 'Clear indoors, darker outdoors in sunlight.' },
+  ];
+  const BRANDS = [ // id matches /lenses?brand=<id>
+    { id: 'essilor', name: 'Essilor' }, { id: 'zeiss', name: 'ZEISS' }, { id: 'hoya', name: 'Hoya' },
+    { id: 'kodak-lens', name: 'Kodak Lens' }, { id: 'crizal', name: 'Crizal' },
+  ];
+  const LENSES = [ // [brand id, name, type id, features (as entered by staff), price or null]
+    ['essilor', 'Crizal Rock', 'single-vision', ['Anti-glare', 'Scratch-resistant'], 2400],
+    ['hoya', 'Hilux', 'single-vision', ['Anti-glare', 'Thin'], null],
+    ['kodak-lens', 'Kodak Single Vision', 'single-vision', ['Anti-glare'], 1200],
+    ['zeiss', 'ZEISS Bifocal', 'bifocal', ['Scratch-resistant'], 3500],
+    ['essilor', 'Essilor Bifocal', 'bifocal', ['Anti-glare'], null],
+    ['zeiss', 'SmartLife Progressive', 'progressive', ['Anti-glare', 'Thin'], 14000],
+    ['essilor', 'Varilux Comfort', 'progressive', ['Anti-glare'], null],
+    ['hoya', 'BlueControl', 'blue-cut', ['Blue-light filter', 'Anti-glare'], 2900],
+    ['crizal', 'Crizal Prevencia', 'blue-cut', ['Blue-light filter'], null],
+    ['essilor', 'Transitions Signature', 'photochromic', ['Darkens outdoors'], 6500],
+  ].map(([brand, name, type, features, price]) => ({ brand, name, type, features, price }));
+
+  const typeOf = id => TYPES.find(t => t.id === id);
+  const brandOf = id => BRANDS.find(b => b.id === id);
+  const count = (key, id) => LENSES.filter(l => l[key] === id).length;
+  // Only types and brands that have active lenses are shown
+  const types = TYPES.filter(t => count('type', t.id));
+  const brands = BRANDS.filter(b => count('brand', b.id));
+
+  /* ---------- Lens type cards ---------- */
+  document.getElementById('ltypes').innerHTML = types.map(t => `
+    <article class="value ltype">
+      <svg class="icon"><use href="#${t.icon}"/></svg>
+      <h3>${t.name}</h3>
+      <p>${t.text}</p>
+      <a class="link-arrow" href="#catalogue" data-show-type="${t.id}">See lenses (${count('type', t.id)}) <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </article>`).join('');
+
+  /* ---------- Brand tiles ---------- */
+  document.getElementById('brand-tiles').innerHTML = brands.map(b => `
+    <a class="brand-tile" href="#catalogue" data-show-brand="${b.id}">${b.name}<small>${count('brand', b.id)} lens${count('brand', b.id) === 1 ? '' : 'es'}</small></a>`).join('');
+
+  /* ---------- Catalogue: chips + cards, state kept in the URL ---------- */
+  const sel = { type: [], brand: [] };
+  const q = new URLSearchParams(location.search);
+  sel.type = (q.get('type') || '').split(',').filter(id => types.some(t => t.id === id));
+  sel.brand = (q.get('brand') || '').split(',').filter(id => brands.some(b => b.id === id));
+
+  const chip = (group, id, label) => `<button class="chip-toggle" type="button" data-chip="${group}" value="${id}" aria-pressed="false">${label}</button>`;
+  document.getElementById('type-chips').innerHTML = types.map(t => chip('type', t.id, t.name)).join('');
+  document.getElementById('brand-chips').innerHTML = brands.map(b => chip('brand', b.id, b.name)).join('');
+
+  const grid = document.getElementById('lens-grid');
+  const empty = document.getElementById('lens-empty');
+  const rupees = n => '₹' + n.toLocaleString('en-IN');
+  function render() {
+    const list = LENSES.filter(l => (!sel.type.length || sel.type.includes(l.type)) && (!sel.brand.length || sel.brand.includes(l.brand)));
+    grid.innerHTML = list.map(l => {
+      const brand = brandOf(l.brand).name, type = typeOf(l.type).name;
+      return `
+      <article class="lcard">
+        <span class="caps lcard__brand">${brand}</span>
+        <h3>${l.name}</h3>
+        <span class="lcard__type">${type}</span>
+        <ul class="pill-list" aria-label="Features">${l.features.slice(0, 3).map(f => `<li>${f}</li>`).join('')}</ul>
+        <div class="lcard__foot">
+          ${l.price ? `<span class="lcard__price">${rupees(l.price)}</span>` : '<span class="lcard__price lcard__price--ask">Ask for price</span>'}
+          <button class="btn btn--outline-dark fcard__enquire" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"
+            data-wa-text="Hi VS Lens Mart, I'd like to know about the ${brand} ${l.name} (${type}) lens.">Enquire</button>
+        </div>
+      </article>`;
+    }).join('');
+    grid.hidden = !list.length;
+    empty.hidden = !!list.length;
+    empty.className = list.length ? '' : 'empty';
+    empty.innerHTML = list.length ? '' : `
+      <svg class="icon" aria-hidden="true"><use href="#i-lens"/></svg>
+      <h2>No lenses match</h2>
+      <p>We have all branded lenses in store. Ask us on WhatsApp and we'll tell you what fits your power.</p>
+      <div class="empty__actions">
+        <button class="btn btn--outline-dark" type="button" data-lens-clear>Clear filters</button>
+        <button class="btn btn--primary" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker">Ask on WhatsApp</button>
+      </div>`;
+    document.getElementById('lens-count').textContent = `${list.length} lens${list.length === 1 ? '' : 'es'}`;
+    document.getElementById('lens-clear').hidden = !(sel.type.length || sel.brand.length);
+    document.querySelectorAll('[data-chip]').forEach(c => c.setAttribute('aria-pressed', String(sel[c.dataset.chip].includes(c.value))));
+    // Keep filters in the URL so links can be shared and mega-menu links land filtered
+    const p = new URLSearchParams();
+    if (sel.type.length) p.set('type', sel.type.join(','));
+    if (sel.brand.length) p.set('brand', sel.brand.join(','));
+    const s = p.toString().replace(/%2C/g, ',');
+    try { history.replaceState(null, '', (s ? `?${s}` : location.pathname) + location.hash); } catch (_) {}
+  }
+  const clear = () => { sel.type = []; sel.brand = []; render(); };
+
+  document.addEventListener('click', e => {
+    const c = e.target.closest('[data-chip]');
+    if (c) {
+      const g = c.dataset.chip;
+      sel[g] = sel[g].includes(c.value) ? sel[g].filter(v => v !== c.value) : [...sel[g], c.value];
+      return render();
+    }
+    if (e.target.closest('#lens-clear, [data-lens-clear]')) return clear();
+    const t = e.target.closest('[data-show-type]'), b = e.target.closest('[data-show-brand]');
+    if (t || b) {
+      e.preventDefault();
+      sel.type = t ? [t.dataset.showType] : []; sel.brand = b ? [b.dataset.showBrand] : [];
+      render();
+      document.getElementById('catalogue').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+  });
+  render();
+
+  /* ---------- Fade and slide up on scroll ---------- */
+  if (!('IntersectionObserver' in window)) return document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+  }), { rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

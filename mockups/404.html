@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found | VS Lens Mart</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="notfound">
+
+<main id="main">
+  <div class="container">
+
+    <!-- ========== Message ========== -->
+    <section class="notfound notfound--page" aria-labelledby="nf-title">
+      <svg class="icon" aria-hidden="true" id="nf-icon"><use href="#i-glasses"/></svg>
+      <p class="caps notfound__code" id="nf-code">404</p>
+      <h1 id="nf-title">This page is a little out of focus.</h1>
+      <p id="nf-text">We couldn't find the page you were looking for. It may have moved, or the link may be wrong.</p>
+
+      <!-- 404: search. Error page: Try again -->
+      <form class="nf-search" role="search" id="nf-search" action="/search">
+        <label class="sr-only" for="nf-q">Search frames, sunglasses and lenses</label>
+        <input type="search" id="nf-q" name="q" placeholder="Search frames, sunglasses and lenses" autocomplete="off">
+        <button class="btn btn--primary" type="submit">Search</button>
+      </form>
+      <div class="empty__actions" id="nf-retry" hidden>
+        <button class="btn btn--primary" type="button" id="retry">Try again</button>
+        <button class="btn btn--outline-dark" type="button" data-picker="call" aria-haspopup="true" aria-expanded="false" aria-controls="picker">Call us</button>
+      </div>
+      <p class="mock-only"><span class="todo" id="nf-note">Live: Next.js not-found.tsx, HTTP 404, noindex. Search goes to /search (sprint 5.6)</span></p>
+    </section>
+
+    <!-- ========== Where to next ========== -->
+    <nav aria-labelledby="next-title">
+      <h2 class="sr-only" id="next-title">Where to next</h2>
+      <div class="nf-cards" id="nf-cards"></div>
+    </nav>
+
+    <!-- ========== Help ========== -->
+    <div class="nf-help">
+      <span>Still can't find it?</span>
+      <button class="btn btn--outline-dark" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker" id="nf-wa"><svg class="icon icon--sm"><use href="#i-wa"/></svg>Ask us on WhatsApp</button>
+      <a class="btn btn--outline-dark" href="/">Back to home</a>
+    </div>
+
+    <div class="mock-panel mock-only" role="group" aria-label="Mockup: preview other states" style="margin-bottom:48px">
+      <span>Preview:</span>
+      <a href="404.html?path=/old-offers-page" style="font-weight:600;color:inherit">Unknown page</a>
+      <a href="404.html?path=/frames/ray-ban-rb9999-vsf-0001" style="font-weight:600;color:inherit">Removed frame</a>
+      <a href="404.html?path=/sunglasses/oakley-old-sg-0001" style="font-weight:600;color:inherit">Removed sunglasses</a>
+      <a href="404.html?path=/eye-camps/old-camp-2019" style="font-weight:600;color:inherit">Missing camp</a>
+      <a href="404.html?state=error" style="font-weight:600;color:inherit">Error page</a>
+    </div>
+  </div>
+</main>
+
+<script src="site.js"></script>
+<script>
+/* 404 and error page (mockup). Spec: docs/requirements/Requirements_NotFound.md.
+   Live: src/app/not-found.tsx (HTTP 404) and src/app/error.tsx (HTTP 500), both noindex.
+   Here ?path= stands in for the address that wasn't found, and ?state=error shows the error page. */
+(() => {
+  const $ = s => document.querySelector(s);
+  const q = new URLSearchParams(location.search);
+  const path = (q.get('path') || '/old-offers-page').slice(0, 200);
+  const error = q.get('state') === 'error';
+  const kind = path.match(/^\/(frames|sunglasses|eye-camps)\//)?.[1];
+
+  const CARD = (href, icon, title, text) => `
+    <a class="quick__card" href="${href}">
+      <span class="quick__icon"><svg class="icon"><use href="#${icon}"/></svg></span>
+      <span><span class="quick__title">${title}</span><span class="quick__text">${text}</span></span>
+      <svg class="icon"><use href="#i-arrow"/></svg>
+    </a>`;
+  const cards = {
+    frames: CARD('/frames', 'i-glasses', 'Frames', 'Eyeglasses and computer glasses'),
+    sunglasses: CARD('/sunglasses', 'i-sun', 'Sunglasses', 'Branded and everyday pairs'),
+    book: CARD('/book-eye-test', 'i-cal', 'Book an eye test', 'Pick a branch, a day and a time'),
+    visit: CARD('/contact#branches', 'i-store', 'Visit a branch', 'Indresham and Patelguda, 7 days'),
+    camps: CARD('/eye-camps', 'i-camp', 'Eye camps', 'Upcoming and past camps'),
+  };
+  let order = ['frames', 'sunglasses', 'book', 'visit'];
+
+  if (error) {
+    document.title = 'Something went wrong | VS Lens Mart';
+    $('#nf-icon').innerHTML = '<use href="#i-alert"/>'; $('#nf-icon').classList.add('icon--square');
+    $('#nf-code').textContent = 'Error';
+    $('#nf-title').textContent = 'Something went wrong on our side.';
+    $('#nf-text').textContent = "Please try again. If it keeps happening, call or WhatsApp us and we'll help straight away.";
+    $('#nf-search').hidden = true;
+    $('#nf-retry').hidden = false;
+    $('#nf-note').textContent = 'Live: Next.js error.tsx, HTTP 500, noindex. Try again re-loads the part that failed; the real error goes to the server log only';
+    $('#nf-wa').dataset.waText = 'Hi VS Lens Mart, a page on your website isn’t loading for me.';
+  } else {
+    if (kind === 'frames' || kind === 'sunglasses') {
+      const sun = kind === 'sunglasses';
+      document.title = `${sun ? 'Sunglasses' : 'Frame'} not available | VS Lens Mart`;
+      $('#nf-title').textContent = `${sun ? 'These sunglasses aren’t' : 'This frame isn’t'} available.`;
+      $('#nf-text').textContent = 'It may have been sold or removed. Have a look at what we have now, or ask us for something similar.';
+      cards[kind] = CARD(`/${kind}`, sun ? 'i-sun' : 'i-glasses', sun ? 'See all sunglasses' : 'See all frames', 'What we have in stock now');
+      order = sun ? ['sunglasses', 'frames', 'book', 'visit'] : order;
+    } else if (kind === 'eye-camps') {
+      document.title = 'Camp not available | VS Lens Mart';
+      $('#nf-icon').innerHTML = '<use href="#i-camp"/>'; $('#nf-icon').classList.add('icon--square');
+      $('#nf-title').textContent = 'This camp isn’t available.';
+      $('#nf-text').textContent = 'It may have been removed. See our upcoming and past eye camps instead.';
+      order = ['camps', 'book', 'frames', 'visit'];
+    }
+    $('#nf-wa').dataset.waText = `Hi VS Lens Mart, I was looking for a page on your website: vslensmart.example${path}`;
+  }
+  $('#nf-cards').innerHTML = order.map(k => cards[k]).join('');
+
+  $('#nf-search').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#nf-q').value.trim();
+    mockToast(`Goes to <code>/search${v ? `?q=${encodeURIComponent(v).replace(/</g, '&lt;')}` : ''}</code> (search is sprint 5.6)`);
+  });
+  $('#retry').addEventListener('click', () => mockToast('Live: re-loads the part of the page that failed'));
+})();
+</script>
+</body>
+</html>

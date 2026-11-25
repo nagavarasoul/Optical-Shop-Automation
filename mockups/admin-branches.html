@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Branches | VS Lens Mart staff area</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="adm-body" data-admin="branches">
+
+<main id="main" class="adm-main">
+  <header class="adm-head">
+    <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/admin">Dashboard</a></li><li aria-current="page">Branches</li></ol></nav>
+    <h1>Branches</h1>
+    <p>Address, phone, WhatsApp and opening hours for each branch. Changes show on the website straight away: footer, Contact page, branch picker and booking form.</p>
+  </header>
+  <p class="mock-only" style="margin-bottom:16px"><span class="todo">Client change 2026-10-21: the admin manages both branches here. Live: the "branches" table; only an admin can save (row-level security)</span></p>
+  <p class="adm-readonly" data-only="staff">Only an admin can change branch details. Ask the admin if something here is wrong.</p>
+
+  <form class="br-forms" id="br-form" novalidate>
+    <div class="esummary" id="esummary" role="alert" tabindex="-1" hidden style="grid-column:1/-1"></div>
+    <div id="br-cards" style="display:contents"></div>
+    <div class="factions" data-only="admin">
+      <span class="factions__note" id="br-note" aria-live="polite">No changes yet.</span>
+      <button class="btn btn--primary" type="submit"><svg class="icon icon--sm"><use href="#i-check"/></svg>Save changes</button>
+    </div>
+  </form>
+
+  <dialog class="adm-dialog" id="dlg-confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Leave without saving?</h2>
+    <p>Your changes to the branch details will be lost.</p>
+    <div class="adm-dialog__actions">
+      <button class="btn btn--outline-dark" type="button" data-close>Stay</button>
+      <button class="btn btn--primary" type="button" id="confirm-ok">Leave</button>
+    </div>
+  </dialog>
+</main>
+
+<script src="admin.js"></script>
+<script>
+/* Branches (mockup). Spec: Requirements_Admin.md section 7.1.
+   Live: a server action (Zod) updates the `branches` table; admin only. Nothing is saved here. */
+(() => {
+  const A = VSLM_ADMIN, $ = s => document.querySelector(s);
+  const admin = A.role === 'admin';
+  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const digits = s => s.replace(/\D/g, '').replace(/^91(?=\d{10}$)/, '');
+
+  const card = (b, k) => {
+    const id = f => `${k}-${f}`;
+    const dummy = b.dummy ? ` <span class="todo">DUMMY (${b.dummy})</span>` : '';
+    return `
+    <section class="fsec" aria-labelledby="${id('title')}">
+      <h2 class="fsec__title" id="${id('title')}"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>${b.name}${k === A.branch ? ' <span class="adm-badge adm-badge--gold">You\'re working here</span>' : ''}</h2>
+      <div class="ffield" id="f-${id('address')}">
+        <label for="${id('address')}">Address</label>
+        <textarea id="${id('address')}" maxlength="200" aria-describedby="${id('address')}-err" ${admin ? '' : 'readonly'}>${esc(b.address)}</textarea>
+        <span class="ferr" id="${id('address')}-err" hidden></span>
+      </div>
+      <div class="ffield">
+        <label for="${id('map')}">Google Maps link <span class="ffield__hint">(optional)</span></label>
+        <input type="url" id="${id('map')}" placeholder="https://maps.app.goo.gl/…" ${admin ? '' : 'readonly'}>
+        <span class="ffield__hint">Used for "Directions". If empty, the site searches Maps for the address.</span>
+      </div>
+      <div class="fgrid">
+        <div class="ffield" id="f-${id('phone')}">
+          <label for="${id('phone')}">Phone</label>
+          <div class="phone"><span class="phone__pre" aria-hidden="true">+91</span><input type="tel" id="${id('phone')}" inputmode="numeric" maxlength="14" value="${digits(b.phone) === '0000000000' ? '00000 00000' : digits(b.phone)}" aria-describedby="${id('phone')}-err" ${admin ? '' : 'readonly'}></div>
+          <span class="ffield__hint">10 digits.${dummy}</span>
+          <span class="ferr" id="${id('phone')}-err" hidden></span>
+        </div>
+        <div class="ffield" id="f-${id('wa')}">
+          <label for="${id('wa')}">WhatsApp number</label>
+          <div class="phone"><span class="phone__pre" aria-hidden="true">+91</span><input type="tel" id="${id('wa')}" inputmode="numeric" maxlength="14" value="${digits(b.whatsapp) === '0000000000' ? '00000 00000' : digits(b.whatsapp)}" aria-describedby="${id('wa')}-err" ${admin ? '' : 'readonly'}></div>
+          <label class="consent" style="margin-top:6px"><input type="checkbox" id="${id('same')}" ${b.phone === b.whatsapp ? 'checked' : ''} ${admin ? '' : 'disabled'}><span>Same as phone</span></label>
+          <span class="ferr" id="${id('wa')}-err" hidden></span>
+        </div>
+        <div class="ffield">
+          <label for="${id('open')}">Opens</label>
+          <input type="time" id="${id('open')}" value="${b.open}" ${admin ? '' : 'readonly'}>
+        </div>
+        <div class="ffield" id="f-${id('close')}">
+          <label for="${id('close')}">Closes</label>
+          <input type="time" id="${id('close')}" value="${b.close}" aria-describedby="${id('close')}-err" ${admin ? '' : 'readonly'}>
+          <span class="ferr" id="${id('close')}-err" hidden></span>
+        </div>
+      </div>
+      <fieldset class="fchips" id="f-${id('days')}">
+        <legend>Open on</legend>
+        <div class="chips-pick">${DAYS.map(d => `<label class="rchoice"><input type="checkbox" name="${id('days')}" value="${d}" checked ${admin ? '' : 'disabled'}><span>${d}</span></label>`).join('')}</div>
+        <span class="ffield__hint">Closed days for festivals go in <a href="/admin/holidays">Branch holidays</a>.</span>
+        <span class="ferr" id="${id('days')}-err" hidden></span>
+      </fieldset>
+      <label class="switch">
+        <span class="switch__text"><b>Show this branch on the site</b><span>Turn off only if the branch closes for good.</span></span>
+        <input type="checkbox" id="${id('visible')}" role="switch" ${b.visible ? 'checked' : ''} ${admin ? '' : 'disabled'}>
+      </label>
+    </section>`;
+  };
+  $('#br-cards').innerHTML = Object.entries(A.BRANCHES).map(([k, b]) => card(b, k)).join('');
+
+  /* ---------- "Same as phone" keeps WhatsApp in step ---------- */
+  const keys = Object.keys(A.BRANCHES);
+  keys.forEach(k => {
+    const wa = $(`#${k}-wa`), same = $(`#${k}-same`), phone = $(`#${k}-phone`);
+    const sync = () => { wa.readOnly = !admin || same.checked; if (same.checked) wa.value = phone.value; };
+    same.addEventListener('change', sync); phone.addEventListener('input', sync); sync();
+  });
+
+  /* ---------- Unsaved changes ---------- */
+  let dirty = false;
+  const form = $('#br-form');
+  form.addEventListener('input', () => { dirty = true; $('#br-note').textContent = 'Unsaved changes'; });
+  const dlg = $('#dlg-confirm');
+  let onLeave = null;
+  $('#confirm-ok').addEventListener('click', () => { dirty = false; dlg.close(); onLeave?.(); });
+  dlg.querySelector('[data-close]').addEventListener('click', () => dlg.close());
+  A.guard = (go, stay) => {
+    if (!dirty) return go();
+    onLeave = go; dlg.showModal();
+    dlg.addEventListener('close', () => { if (dirty) stay(); }, { once: true });
+  };
+
+  /* ---------- Validation and "save" ---------- */
+  function setErr(id, msg) {
+    const f = $(`#f-${id}`), e = $(`#${id}-err`);
+    f.classList.toggle('has-error', !!msg); e.hidden = !msg; e.textContent = msg || '';
+  }
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const errs = [];
+    keys.forEach(k => {
+      const b = A.BRANCHES[k];
+      const check = (id, msg) => { setErr(`${k}-${id}`, msg); if (msg) errs.push([`${k}-${id}`, `${b.name}: ${msg}`]); };
+      check('address', $(`#${k}-address`).value.trim().length < 10 ? 'Enter the full address.' : '');
+      const ok = v => /^\d{10}$/.test(digits(v)) || (b.dummy && digits(v) === '0000000000');
+      check('phone', ok($(`#${k}-phone`).value) ? '' : 'Enter a 10-digit phone number.');
+      check('wa', ok($(`#${k}-wa`).value) ? '' : 'Enter a 10-digit WhatsApp number.');
+      check('close', $(`#${k}-close`).value <= $(`#${k}-open`).value ? 'Closing time must be after opening time.' : '');
+      check('days', form.querySelectorAll(`[name="${k}-days"]:checked`).length ? '' : 'Pick at least one day.');
+    });
+    const sum = $('#esummary');
+    if (errs.length) {
+      sum.innerHTML = `<p><b>Please fix ${errs.length} thing${errs.length > 1 ? 's' : ''}:</b></p><ul>${errs.map(([id, m]) => `<li><a href="#${id}">${m}</a></li>`).join('')}</ul>`;
+      sum.hidden = false; sum.focus();
+      return;
+    }
+    sum.hidden = true; dirty = false;
+    $('#br-note').textContent = 'Saved just now';
+    A.toast('Branch details saved. <code>Mockup: nothing is stored</code>');
+  });
+  $('#esummary').addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    e.preventDefault(); e.stopPropagation(); $(a.getAttribute('href')).focus();
+  }, true);
+})();
+</script>
+</body>
+</html>

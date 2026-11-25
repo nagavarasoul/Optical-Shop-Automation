@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo placeholder">
+  <!-- DUMMY (docs/dummy-data.md D8): stand-in until the client sends the new logo. Never live. -->
+  <circle cx="32" cy="32" r="30" fill="#0D1B2A" stroke="#C9A227" stroke-width="2"/>
+  <circle cx="32" cy="32" r="24.5" fill="none" stroke="#C9A227" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="32" y="38.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="19" fill="#F5C842" letter-spacing="0.5">VS</text>
+  <text x="32" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="5" fill="#C9A227" letter-spacing="1">LOGO</text>
+</svg>

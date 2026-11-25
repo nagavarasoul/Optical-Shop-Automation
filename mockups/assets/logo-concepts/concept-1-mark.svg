@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="VS Lens Mart logo, concept 1: lens monogram">
+  <!-- Logo concept draft for the client to choose from. Not approved. Convert the text to outlines before final use. -->
+  <circle cx="60" cy="60" r="57" fill="#0D1B2A"/>
+  <circle cx="60" cy="60" r="51" fill="none" stroke="#C9A227" stroke-width="3"/>
+  <path d="M20.5 45.6 A42 42 0 0 1 45.6 20.5" fill="none" stroke="#F5C842" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="60" y="75" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="42" letter-spacing="-1" fill="#F5C842">VS</text>
+</svg>

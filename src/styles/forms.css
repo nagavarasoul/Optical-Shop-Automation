@@ -1,0 +1,122 @@
+/* ==========================================================================
+   VS Lens Mart: form fields (mockup section 13), shared by staff and public forms
+   PORTED from the signed-off mockups/styles.css by copying the exact rules
+   (mockup-only review-note rules removed). Edit here, not in the mockup.
+   ========================================================================== */
+@layer components {
+/* ==========================================================================
+   13. Booking form (book an eye test). Spec: docs/requirements/Requirements_Booking.md
+   ========================================================================== */
+.book { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--s-7); align-items: start; padding-bottom: var(--s-8); }
+
+/* 13.1 Steps */
+.bstep { border: 0; margin: 0 0 var(--s-6); padding: 0; min-width: 0; }
+.bstep[disabled] { opacity: 0.45; }
+.bstep legend { display: flex; align-items: center; gap: var(--s-3); padding: 0; margin-bottom: var(--s-4); font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); color: var(--heading); }
+.bstep__num { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--pressed-bg); color: var(--pressed-ink); font-family: var(--font-body); font-size: var(--fs-sm); font-weight: 600; flex: none; }
+.bstep.is-done .bstep__num { background: var(--gold); color: var(--navy); }
+.bsub { font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--accent-ink); margin: var(--s-4) 0 var(--s-2); }
+
+/* 13.2 Radio choices styled as cards and chips (real radio inputs, so arrow keys work) */
+.rchoice { position: relative; }
+.rchoice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.branch-pick { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); }
+.branch-pick .rchoice span {
+  display: grid; gap: 2px; padding: var(--s-4); border-radius: var(--r-md); cursor: pointer;
+  background: var(--surface); border: 1.5px solid var(--line); color: var(--text-muted); font-size: var(--fs-sm);
+}
+.branch-pick .rchoice b { font-family: var(--font-display); font-size: var(--fs-md); color: var(--heading); }
+.chips-pick { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.chips-pick .rchoice span {
+  display: inline-grid; place-items: center; min-height: var(--tap); min-width: 4.5rem; padding: 4px var(--s-3);
+  border-radius: var(--r-pill); cursor: pointer; text-align: center; line-height: 1.2;
+  background: var(--surface); border: 1px solid var(--line); color: var(--heading); font-weight: 600; font-size: var(--fs-sm);
+}
+.chips-pick .rchoice small { display: block; font-weight: 500; font-size: 0.6875rem; color: var(--text-muted); }
+.rchoice input:checked + span { border-color: var(--pressed-bg); background: var(--pressed-bg); color: var(--pressed-ink); }
+.rchoice input:checked + span b, .rchoice input:checked + span small { color: inherit; }
+.rchoice input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
+.rchoice input:disabled + span { cursor: not-allowed; opacity: 0.45; text-decoration: line-through; }
+.other-date { display: flex; align-items: center; gap: var(--s-3); margin-top: var(--s-3); font-size: var(--fs-sm); color: var(--text-muted); }
+.slot-empty { color: var(--text-muted); font-size: var(--fs-sm); }
+
+/* 13.3 Text fields */
+.ffield { display: grid; gap: 6px; margin-bottom: var(--s-4); }
+.ffield > label, .ffield > .ffield__label { font-weight: 600; font-size: var(--fs-sm); color: var(--heading); }
+.ffield__hint { font-size: var(--fs-xs); color: var(--text-muted); }
+.ffield input[type="text"], .ffield input[type="tel"], .ffield input[type="date"], .ffield textarea, .other-date input {
+  width: 100%; min-height: var(--btn-h); padding: 10px var(--s-4); border-radius: var(--r-sm);
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--text); font: inherit;
+}
+.other-date input { width: auto; }
+.ffield textarea { min-height: 96px; resize: vertical; }
+.ffield input:focus, .ffield textarea:focus, .other-date input:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+.phone { display: flex; }
+.phone__pre { display: grid; place-items: center; padding: 0 var(--s-3); border: 1.5px solid var(--line); border-right: 0; border-radius: var(--r-sm) 0 0 var(--r-sm); background: var(--bg); color: var(--text-muted); font-weight: 600; }
+.phone input { border-radius: 0 var(--r-sm) var(--r-sm) 0 !important; }
+.ffield.has-error input, .ffield.has-error textarea { border-color: var(--gold); box-shadow: inset 4px 0 0 var(--gold); }
+.ferr { font-size: var(--fs-sm); font-weight: 600; color: var(--heading); display: flex; gap: 6px; align-items: center; }
+.ferr::before { content: "!"; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); color: var(--navy); font-size: 0.75rem; flex: none; }
+.consent { display: grid; grid-template-columns: 22px 1fr; gap: var(--s-3); align-items: start; font-size: var(--fs-sm); color: var(--text); cursor: pointer; }
+.consent input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--btn-ink); }
+.consent a { color: var(--heading); font-weight: 600; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* 13.4 Error summary and submit */
+.esummary { padding: var(--s-4) var(--s-5); margin-bottom: var(--s-5); border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--gold); }
+.esummary h2 { font-size: var(--fs-md); color: var(--heading); margin-bottom: var(--s-2); }
+.esummary ul { list-style: disc; padding-left: var(--s-5); }
+.esummary a { color: var(--heading); font-weight: 600; }
+.esummary .branch__actions { margin-top: var(--s-3); }
+.bsubmit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.bsubmit .btn { min-width: 14rem; }
+.btn[aria-busy="true"] { opacity: 0.7; cursor: progress; }
+
+/* 13.5 Summary card (sticky on desktop) */
+.bsummary { position: sticky; top: calc(var(--utility-h) + var(--nav-h) + var(--s-4)); display: grid; gap: var(--s-4); padding: var(--s-5); border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); }
+.bsummary h2 { font-size: var(--fs-md); color: var(--heading); }
+.bsummary dl { display: grid; grid-template-columns: 5rem 1fr; gap: var(--s-2) var(--s-3); margin: 0; font-size: var(--fs-sm); }
+.bsummary dt { color: var(--text-muted); }
+.bsummary dd { margin: 0; color: var(--heading); font-weight: 600; }
+.bsummary__help { padding-top: var(--s-4); border-top: 1px solid var(--line); font-size: var(--fs-sm); color: var(--text-muted); display: grid; gap: var(--s-2); }
+
+/* 13.6 Confirmation */
+.bdone { max-width: 40rem; margin: 0 auto var(--s-8); display: grid; gap: var(--s-4); padding: var(--s-6); border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); text-align: center; justify-items: center; }
+.bdone__tick { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--gold); color: var(--navy); font-size: 2rem; font-weight: 800; }
+.bdone h2 { font-size: var(--fs-xl); color: var(--heading); }
+.bdone__ref { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); letter-spacing: 0.08em; color: var(--heading); padding: var(--s-2) var(--s-4); border: 1.5px dashed var(--brass); border-radius: var(--r-sm); }
+.bdone dl { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-4); margin: 0; text-align: left; }
+.bdone dt { color: var(--text-muted); }
+.bdone dd { margin: 0; color: var(--heading); font-weight: 600; }
+.bdone__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: center; }
+.bdone__note { color: var(--text-muted); font-size: var(--fs-sm); }
+
+/* No sticky Call / WhatsApp / Book bar here: the page itself is the booking */
+[data-page="book"] .stickybar { display: none !important; }
+
+/* 13.7 Breakpoints */
+/* On small screens the summary card goes away; a one-line summary sits above the submit button */
+.bsubmit__sum { display: none; margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--r-sm); background: var(--surface); border: 1px solid var(--line); font-weight: 600; color: var(--heading); }
+.bsubmit__sum:empty { display: none !important; }
+@media (max-width: 1179px) {
+  .book { grid-template-columns: 1fr; gap: var(--s-5); }
+  .bsummary { display: none; }
+  .bsubmit__sum { display: block; }
+}
+@media (max-width: 767px) {
+  [data-page="book"] { padding-bottom: 0; }
+  .branch-pick { grid-template-columns: 1fr; }
+
+  .bsubmit .btn { width: 100%; }
+  .bdone { padding: var(--s-5); }
+}
+
+
+/* Select fields (mockup section 16) */
+.ffield select {
+  width: 100%; min-height: var(--btn-h); padding: 10px var(--s-4); border-radius: var(--r-sm);
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--text); font: inherit;
+}
+.ffield select:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+.ffield.has-error select { border-color: var(--gold); box-shadow: inset 4px 0 0 var(--gold); }
+}
