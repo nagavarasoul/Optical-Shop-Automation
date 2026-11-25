@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eye camps | VS Lens Mart staff area</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="adm-body" data-admin="camps">
+
+<main id="main" class="adm-main">
+
+  <!-- ========== List: /admin/eye-camps ========== -->
+  <div id="list-view" hidden>
+    <header class="adm-head">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/admin">Dashboard</a></li><li aria-current="page">Eye camps</li></ol></nav>
+      <h1>Eye camps</h1>
+      <p>Add upcoming camps so customers can find them. After a camp, add how many people came and the photos.</p>
+    </header>
+    <p class="mock-only" style="margin-bottom:16px"><span class="todo">Client change 2026-10-21: eye camps are managed here. DUMMY camps (C19). Live: the "eye_camps" and "camp_photos" tables</span></p>
+    <div class="adm-tools">
+      <div class="chips-pick bk-filter" role="radiogroup" aria-label="Show camps">
+        <label class="rchoice"><input type="radio" name="when" value="upcoming" checked><span>Upcoming</span></label>
+        <label class="rchoice"><input type="radio" name="when" value="past"><span>Past</span></label>
+      </div>
+      <a class="btn btn--primary" href="/admin/eye-camps/new"><svg class="icon icon--sm"><use href="#i-plus"/></svg>Add eye camp</a>
+    </div>
+    <section class="apanel" aria-labelledby="camps-title">
+      <div class="apanel__head"><h2 id="camps-title"><svg class="icon"><use href="#i-camp"/></svg><span id="camps-heading"></span></h2></div>
+      <div class="apanel__body"><div class="camp-list" id="camp-list"></div></div>
+    </section>
+  </div>
+
+  <!-- ========== Form: /admin/eye-camps/new and /admin/eye-camps/[slug] ========== -->
+  <div id="form-view" hidden>
+    <header class="adm-head">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/admin">Dashboard</a></li><li><a href="/admin/eye-camps">Eye camps</a></li><li aria-current="page" id="crumb-here"></li></ol></nav>
+      <h1 id="form-title"></h1>
+      <p id="form-sub"></p>
+    </header>
+
+    <form class="fform cf" id="cform" novalidate>
+      <div class="esummary" id="esummary" role="alert" tabindex="-1" hidden></div>
+
+      <section class="fsec" aria-labelledby="sec-when">
+        <h2 class="fsec__title" id="sec-when">Camp details</h2>
+        <div class="ffield" id="f-title">
+          <label for="title">Camp name</label>
+          <input type="text" id="title" maxlength="80" placeholder="For example: Free Eye Camp, Patelguda" aria-describedby="title-err">
+          <span class="ferr" id="title-err" hidden></span>
+        </div>
+        <div class="fgrid">
+          <div class="ffield" id="f-date">
+            <label for="date">Date</label>
+            <input type="date" id="date" aria-describedby="date-hint date-err">
+            <span class="ffield__hint" id="date-hint">Moves to "Past camps" by itself after this day.</span>
+            <span class="ferr" id="date-err" hidden></span>
+          </div>
+          <div class="ffield">
+            <span class="ffield__label" id="time-label">Time</span>
+            <div class="size3" role="group" aria-labelledby="time-label" style="grid-template-columns:1fr 1fr">
+              <label>Starts<input type="time" id="start" value="09:00"></label>
+              <label>Ends<input type="time" id="end" value="13:00"></label>
+            </div>
+            <span class="ferr" id="end-err" hidden></span>
+          </div>
+        </div>
+        <fieldset class="fchips">
+          <legend>Nearest branch</legend>
+          <div class="chips-pick">
+            <label class="rchoice"><input type="radio" name="branch" value="Indresham"><span>Indresham</span></label>
+            <label class="rchoice"><input type="radio" name="branch" value="Patelguda"><span>Patelguda</span></label>
+          </div>
+        </fieldset>
+        <div class="ffield" id="f-place">
+          <label for="place">Location and address</label>
+          <textarea id="place" maxlength="200" placeholder="For example: Community hall, Citizens Colony, Indresham" aria-describedby="place-hint place-err"></textarea>
+          <span class="ffield__hint" id="place-hint">Customers get a "Directions" button for this address.</span>
+          <span class="ferr" id="place-err" hidden></span>
+        </div>
+        <div class="ffield">
+          <label for="with">Organised with <span class="ffield__hint">(optional)</span></label>
+          <input type="text" id="with" maxlength="80" placeholder="For example: a school or residents' association">
+        </div>
+        <div class="ffield" id="f-text">
+          <label for="text">Description</label>
+          <textarea id="text" maxlength="400" aria-describedby="text-count text-err"></textarea>
+          <span class="ffield__hint" id="text-count">0 / 400</span>
+          <span class="ferr" id="text-err" hidden></span>
+        </div>
+        <fieldset class="fchips">
+          <legend>What's offered</legend>
+          <div class="chips-pick" id="offered"></div>
+          <span class="ffield__hint">Short labels only. No medical promises. <span class="todo">DUMMY list (C19)</span></span>
+        </fieldset>
+      </section>
+
+      <!-- After the camp -->
+      <section class="fsec" aria-labelledby="sec-after" id="after-sec">
+        <h2 class="fsec__title" id="sec-after">After the camp</h2>
+        <p class="ffield__hint" id="after-hint" style="margin-bottom:12px"></p>
+        <div class="ffield" id="f-people" style="max-width:16rem">
+          <label for="people">People checked</label>
+          <input type="text" id="people" inputmode="numeric" maxlength="5" aria-describedby="people-err">
+          <span class="ferr" id="people-err" hidden></span>
+        </div>
+        <span class="ffield__label">Photos <span class="ffield__hint" id="photo-count">0 of 12</span></span>
+        <div class="photos" id="photos" style="margin-top:6px"></div>
+        <input type="file" id="pick" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden>
+        <label class="consent" style="margin-top:12px" id="f-consent"><input type="checkbox" id="consent"><span>Photos that show people: everyone shown gave permission to put them on the website.</span></label>
+        <span class="ferr" id="consent-err" hidden></span>
+        <p class="photo-tip">Up to 12 photos, the first is the cover. Same file checks as frame photos (JPG, PNG, WebP or HEIC, max 10 MB). <span class="todo">Customer photo permission still open (Q146)</span></p>
+      </section>
+
+      <section class="fsec" aria-labelledby="sec-pub">
+        <h2 class="fsec__title" id="sec-pub">On the website</h2>
+        <label class="switch">
+          <span class="switch__text"><b>Visible on the site</b><span>Turn off to hide it from the Eye camps page.</span></span>
+          <input type="checkbox" id="visible" role="switch" checked>
+        </label>
+      </section>
+
+      <div class="danger" id="danger" hidden>
+        <p data-only="admin"><b>Delete this camp</b>Removes it and its photos for good. Staff can only hide camps.</p>
+        <button class="btn btn--outline-dark" type="button" id="delete" data-only="admin"><svg class="icon icon--sm"><use href="#i-trash"/></svg>Delete camp</button>
+        <p data-only="staff"><b>Take it off the site</b>Hides it straight away. Only an admin can delete it.</p>
+        <button class="btn btn--outline-dark" type="button" id="hide" data-only="staff"><svg class="icon icon--sm"><use href="#i-eye"/></svg>Hide from site</button>
+      </div>
+
+      <div class="factions">
+        <span class="factions__note" id="form-note" aria-live="polite"></span>
+        <a class="btn btn--outline-dark" href="/admin/eye-camps">Cancel</a>
+        <button class="btn btn--primary" type="submit" id="save"><svg class="icon icon--sm"><use href="#i-check"/></svg><span id="save-label"></span></button>
+      </div>
+      <div class="mock-panel mock-only" role="group" aria-label="Mockup: open other states">
+        <span>Open:</span>
+        <a href="admin-camps.html" style="font-weight:600;color:inherit">Camp list</a>
+        <a href="admin-camps.html?camp=new" style="font-weight:600;color:inherit">New camp</a>
+        <a href="admin-camps.html?camp=free-eye-camp-patelguda" style="font-weight:600;color:inherit">Upcoming camp</a>
+        <a href="admin-camps.html?camp=community-eye-camp-indresham" style="font-weight:600;color:inherit">Past camp</a>
+      </div>
+    </form>
+  </div>
+
+  <dialog class="adm-dialog" id="dlg-confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-text"></p>
+    <div class="adm-dialog__actions">
+      <button class="btn btn--outline-dark" type="button" data-close>Cancel</button>
+      <button class="btn btn--primary" type="button" id="confirm-ok"></button>
+    </div>
+  </dialog>
+</main>
+
+<script src="admin.js"></script>
+<script src="camps-data.js"></script>
+<script>
+/* Eye camps in the staff area (mockup). Spec: Requirements_Admin.md section 7.2, Requirements_EyeCamps.md section 2.
+   ?camp=new → add form · ?camp=<slug> → edit form · no parameter → list.
+   Live: a server action (Zod) writes eye_camps; photos go to the "camps" bucket. Everything is DUMMY (C19). */
+(() => {
+  const A = VSLM_ADMIN, C = VSLM_CAMPS, $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const param = new URLSearchParams(location.search).get('camp');
+
+  /* ================= List ================= */
+  if (!param) {
+    $('#list-view').hidden = false;
+    const render = () => {
+      const when = document.querySelector('input[name="when"]:checked').value;
+      const list = when === 'upcoming' ? C.upcoming() : C.past();
+      $('#camps-heading').textContent = `${when === 'upcoming' ? 'Upcoming' : 'Past'} camps (${list.length})`;
+      $('#camp-list').innerHTML = list.length ? list.map(c => {
+        const d = C.parse(c.date);
+        const needs = !C.isUpcoming(c) && (!c.people || !c.photos);
+        return `
+        <div class="camp-row">
+          <span class="camp-row__date" aria-hidden="true"><span><b>${d.getDate()}</b><br><span>${d.toLocaleDateString('en-IN', { month: 'short' })} ${String(d.getFullYear()).slice(2)}</span></span></span>
+          <span class="camp-row__text">
+            <b>${esc(c.title)} <span class="todo">DUMMY</span></b>
+            <span>${C.longDate(c)} · ${C.timeRange(c)}</span>
+            <span>${esc(c.place)}</span>
+            <span>${C.isUpcoming(c) ? '<span class="adm-badge adm-badge--ok">On the site</span>'
+              : needs ? '<span class="adm-badge adm-badge--alert">Add people count and photos</span>'
+              : `${c.people} people checked · ${c.photos} photos`}</span>
+          </span>
+          <a class="btn btn--sm ${needs ? 'btn--primary' : 'btn--outline-dark'}" href="/admin/eye-camps/${c.slug}">Edit</a>
+        </div>`;
+      }).join('') : `<p class="apanel__empty">${when === 'upcoming' ? 'No upcoming camps. Tap "Add eye camp" to add one.' : 'No past camps yet.'}</p>`;
+    };
+    document.addEventListener('change', e => { if (e.target.name === 'when') render(); });
+    render();
+    return;
+  }
+
+  /* ================= Form ================= */
+  const camp = param === 'new' ? null : C.bySlug(param);
+  if (param !== 'new' && !camp) { location.replace('admin-camps.html'); return; }
+  document.body.classList.add('has-form');
+  $('#form-view').hidden = false;
+  const isNew = !camp, past = camp && !C.isUpcoming(camp);
+  document.title = `${isNew ? 'Add an eye camp' : camp.title} | VS Lens Mart staff area`;
+  $('#crumb-here').textContent = isNew ? 'Add an eye camp' : 'Edit camp';
+  $('#form-title').textContent = isNew ? 'Add an eye camp' : camp.title;
+  $('#form-sub').textContent = isNew ? 'It shows on the Eye camps page as soon as you save. No approval needed.'
+    : past ? 'This camp has happened. Add the people count and photos so it shows in "Past camps".' : 'Changes show on the site straight away.';
+  $('#save-label').textContent = isNew ? 'Save camp' : 'Save changes';
+  $('#danger').hidden = isNew;
+
+  // "After the camp" is for past camps; for new and upcoming camps it waits until the day has passed
+  $('#after-hint').textContent = past ? 'Shown on the camp page under "Past camps".' : 'Fill this in after the camp day. It opens by itself once the date has passed.';
+  $('#after-sec').querySelectorAll('input').forEach(i => { i.disabled = !past; });
+
+  /* What's offered: chips (DUMMY C19) */
+  const OFFER = ['Vision check', 'Advice on glasses', 'Eye pressure check', 'Frame adjustment'];
+  $('#offered').innerHTML = OFFER.map(o => `<label class="rchoice"><input type="checkbox" name="offered" value="${o}" ${(camp ? C.OFFERED : []).includes(o) ? 'checked' : ''}><span>${o}</span></label>`).join('');
+
+  /* Fill from the camp */
+  const placeBranch = p => /patelguda|ellenki/i.test(p) ? 'Patelguda' : 'Indresham';
+  if (camp) {
+    $('#title').value = camp.title; $('#date').value = camp.date; $('#start').value = camp.start; $('#end').value = camp.end;
+    $('#place').value = camp.place; $('#with').value = camp.with || ''; $('#text').value = camp.text;
+    $('#people').value = camp.people || '';
+  }
+  document.querySelector(`input[name="branch"][value="${camp ? placeBranch(camp.place) : A.branch}"]`).checked = true;
+  const count = () => { $('#text-count').textContent = `${$('#text').value.length} / 400`; };
+  $('#text').addEventListener('input', count); count();
+
+  /* Photos: placeholders for existing ones, previews for new picks (no upload in the mockup) */
+  const MAX = 12;
+  let photos = Array.from({ length: camp?.photos || 0 }, (_, i) => ({ label: `Camp photo ${i + 1}` }));
+  function renderPhotos() {
+    $('#photo-count').textContent = `${photos.length} of ${MAX}`;
+    $('#photos').innerHTML = photos.map((p, i) => `
+      <div class="ptile">
+        <div class="ptile__img">${p.url ? `<img src="${p.url}" alt="">` : `<div class="ph" data-label="${p.label}"></div>`}${i === 0 ? '<span class="adm-badge adm-badge--gold ptile__cover">Cover</span>' : ''}</div>
+        <div class="ptile__tools"><span></span><button type="button" data-remove="${i}" aria-label="Remove photo ${i + 1}" ${past ? '' : 'disabled'}><svg class="icon icon--sm"><use href="#i-trash"/></svg></button></div>
+      </div>`).join('') + (photos.length < MAX ? `
+      <div class="padd">
+        <button class="btn btn--outline-dark" type="button" id="add-photos" ${past ? '' : 'disabled'}><svg class="icon icon--sm"><use href="#i-upload"/></svg>Add photos</button>
+        <p>${past ? 'Choose from your phone or computer' : 'After the camp'}</p>
+      </div>` : '');
+  }
+  $('#photos').addEventListener('click', e => {
+    if (e.target.closest('#add-photos')) return $('#pick').click();
+    const r = e.target.closest('[data-remove]');
+    if (r) { photos.splice(+r.dataset.remove, 1); dirty = true; renderPhotos(); }
+  });
+  $('#pick').addEventListener('change', e => {
+    const files = [...e.target.files].filter(f => f.type.startsWith('image/')).slice(0, MAX - photos.length);
+    files.forEach(f => photos.push({ url: URL.createObjectURL(f) }));
+    if (files.length) { dirty = true; A.toast(`${files.length} photo${files.length > 1 ? 's' : ''} added. <code>Mockup: not uploaded</code>`); }
+    e.target.value = ''; renderPhotos();
+  });
+  renderPhotos();
+
+  /* Unsaved changes + confirm dialog */
+  let dirty = false, onConfirm = null;
+  const form = $('#cform'), dlg = $('#dlg-confirm');
+  form.addEventListener('input', () => { dirty = true; $('#form-note').textContent = 'Unsaved changes'; });
+  function ask(title, text, ok, fn) {
+    $('#confirm-title').textContent = title; $('#confirm-text').textContent = text; $('#confirm-ok').textContent = ok;
+    onConfirm = fn; dlg.showModal();
+  }
+  $('#confirm-ok').addEventListener('click', () => { dlg.close(); onConfirm?.(); });
+  dlg.querySelector('[data-close]').addEventListener('click', () => dlg.close());
+  A.guard = (go, stay) => {
+    if (!dirty) return go();
+    ask('Leave without saving?', 'Your changes to this camp will be lost.', 'Leave', () => { dirty = false; go(); });
+    dlg.addEventListener('close', () => { if (dirty) stay(); }, { once: true });
+  };
+  $('#delete').addEventListener('click', () => ask(`Delete "${camp.title}" permanently?`, 'Its photos are deleted too. This cannot be undone.', 'Delete camp', () => {
+    dirty = false; A.toast('Camp deleted. <code>Mockup: nothing is removed</code>');
+  }));
+  $('#hide').addEventListener('click', () => { $('#visible').checked = false; dirty = true; A.toast('Hidden from the site once you save'); });
+
+  /* Validation and "save" */
+  function setErr(id, msg) {
+    const f = $(`#f-${id}`), e = $(`#${id}-err`);
+    f?.classList.toggle('has-error', !!msg); e.hidden = !msg; e.textContent = msg || '';
+  }
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const errs = [];
+    const check = (id, msg, focus = id) => { setErr(id, msg); if (msg) errs.push([focus, msg]); };
+    check('title', $('#title').value.trim().length < 4 ? 'Enter the camp name.' : '');
+    check('date', !$('#date').value ? 'Pick the date.' : '');
+    check('end', $('#end').value <= $('#start').value ? 'The end time must be after the start time.' : '', 'end');
+    check('place', $('#place').value.trim().length < 6 ? 'Enter where the camp is.' : '');
+    check('text', $('#text').value.trim().length < 10 ? 'Add a short description.' : '');
+    if (past) {
+      const n = $('#people').value.trim();
+      check('people', n && !/^\d{1,5}$/.test(n) ? 'Enter a number, for example 120.' : '');
+      check('consent', photos.some(p => p.url) && !$('#consent').checked ? 'Tick the box to confirm permission for the new photos.' : '');
+    }
+    const sum = $('#esummary');
+    if (errs.length) {
+      sum.innerHTML = `<p><b>Please fix ${errs.length} thing${errs.length > 1 ? 's' : ''}:</b></p><ul>${errs.map(([id, m]) => `<li><a href="#${id}">${m}</a></li>`).join('')}</ul>`;
+      sum.hidden = false; sum.focus();
+      return;
+    }
+    sum.hidden = true; dirty = false;
+    $('#form-note').textContent = 'Saved just now';
+    A.toast(`${isNew ? 'Camp added' : 'Changes saved'}. <code>Mockup: nothing is stored</code>`);
+  });
+  $('#esummary').addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    e.preventDefault(); $(a.getAttribute('href')).focus();
+  });
+})();
+</script>
+</body>
+</html>

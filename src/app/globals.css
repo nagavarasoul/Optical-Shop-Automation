@@ -1,0 +1,263 @@
+/* ==========================================================================
+   VS Lens Mart: global styles and design tokens
+   Ported from mockups/styles.css section 1 (the signed-off design), so the
+   app and the mockups use the same values. Don't add colours that aren't in
+   the CLAUDE.md design-system table.
+   Components use the colour roles (--bg, --surface, --heading, …) through
+   the Tailwind colours defined in @theme below, never the raw brand colours,
+   so light and dark mode swap in one place.
+   ========================================================================== */
+@import "tailwindcss";
+@import "../styles/site-chrome.css"; /* header, menus, sticky bar, footer (sprint 5.1) */
+@import "../styles/forms.css"; /* form fields (mockup section 13) */
+@import "../styles/admin.css"; /* staff area (mockup section 17) */
+@import "../styles/catalogue.css"; /* frame card, listings, product detail (mockup 7–9) */
+@import "../styles/pages.css"; /* page sections: hero, branches, contact, privacy (mockup 7, 10, 12, 16, 18) */
+
+/* Dark mode follows data-theme on <html> (set before paint in layout.tsx),
+   or the device setting when the visitor hasn't chosen. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* Brand values (CLAUDE.md design system) */
+  --navy: #0D1B2A;
+  --navy-2: #1E3A5F;
+  --gold: #F5C842;
+  --brass: #C9A227;
+  --cream: #FAF6EE;
+  --ink: #1A1A1A;
+  --white: #FFFFFF;
+
+  /* Tints of the tokens above (opacity only, no new hues) */
+  --white-80: rgb(255 255 255 / 0.80);
+  --white-64: rgb(255 255 255 / 0.64);
+  --white-12: rgb(255 255 255 / 0.12);
+  --white-08: rgb(255 255 255 / 0.08);
+  --ink-72: rgb(26 26 26 / 0.72);
+  --ink-12: rgb(26 26 26 / 0.12);
+  --navy-08: rgb(13 27 42 / 0.08);
+  --brass-40: rgb(201 162 39 / 0.40);
+  --gold-16: rgb(245 200 66 / 0.16);
+
+  /* Dark mode surfaces */
+  --night: #0A1622;
+  --night-2: #0F1E2E;
+  --night-3: #162B42;
+
+  /* Colour roles: light (the original look) */
+  color-scheme: light;
+  --bg: var(--cream);
+  --bg-alt: var(--white);
+  --surface: var(--white);
+  --text: var(--ink);
+  --text-muted: var(--ink-72);
+  --line: var(--ink-12);
+  --heading: var(--navy);
+  --accent-ink: var(--navy-2);
+  --btn-ink: var(--navy);
+  --pressed-bg: var(--navy);
+  --pressed-ink: var(--white);
+  --focus: var(--navy-2);
+  --navy-edge: var(--navy);
+  --shadow-panel: 0 18px 40px -12px rgb(13 27 42 / 0.35), 0 2px 6px rgb(13 27 42 / 0.12);
+  --shadow-bar: 0 -6px 20px -6px rgb(13 27 42 / 0.30);
+
+  --ph-stripe: var(--navy-08); /* photo placeholder stripes */
+  --todo-ink: var(--ink); /* DUMMY tag text (development only) */
+
+  /* Type (mockups/styles.css section 1). The font names come from next/font in layout.tsx */
+  --font-display: var(--font-jakarta), "Inter", system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2.25rem;
+  --fs-2xl: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --lh-tight: 1.1;
+  --lh-body: 1.6;
+  --track-caps: 0.08em;
+
+  /* Spacing (4 px base) and layout */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --max-w: 90rem;
+  --r-pill: 999px;
+  --r-md: 12px;
+  --r-sm: 8px;
+
+  /* Controls and sticky heights */
+  --btn-h: 48px;
+  --tap: 44px;
+  --utility-h: 40px;
+  --nav-h: 80px;
+  --stickybar-h: 64px;
+
+  /* Main menu bar: white in light mode (developer idea 2026-10-23, for the client to
+     confirm; the approved mockup is navy). Dark mode keeps the navy bar. */
+  --nav-bg: var(--white);
+  --nav-ink: var(--navy);
+  --nav-ink-soft: var(--ink-72);
+  --nav-line: var(--ink-12);
+  --nav-hover: var(--navy-08);
+  --nav-current: var(--navy);     /* gold text is too faint on white; the gold underline stays */
+  --nav-accent: var(--navy-2);    /* WhatsApp icon, "EST. 1999", sun icon */
+  --nav-focus: var(--navy-2);
+  --nav-search-bg: var(--bg);
+  --nav-field-bg: var(--white);
+  --nav-field-line: var(--ink-12);
+  --nav-field-ink: var(--ink);
+  --nav-field-hint: var(--ink-72);
+
+  /* Motion: menus ≤300 ms, page/section fades 300–500 ms */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-menu: 220ms;
+  --dur-section: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-menu: 0ms; --dur-section: 0ms; }
+}
+
+/* Dark roles: chosen with the toggle, or by the device when not chosen.
+   Navy blocks and gold buttons look the same in both modes. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: var(--night);
+  --bg-alt: var(--night-2);
+  --surface: var(--night-3);
+  --text: var(--cream);
+  --text-muted: rgb(250 246 238 / 0.72);
+  --line: var(--white-12);
+  --heading: var(--cream);
+  --accent-ink: var(--brass);
+  --btn-ink: var(--cream);
+  --pressed-bg: var(--gold);
+  --pressed-ink: var(--navy);
+  --focus: var(--gold);
+  --navy-edge: var(--white-12);
+  --ph-stripe: var(--white-08);
+  --todo-ink: var(--cream);
+  --nav-bg: var(--navy);
+  --nav-ink: var(--white);
+  --nav-ink-soft: var(--white-80);
+  --nav-line: var(--white-08);
+  --nav-hover: var(--white-08);
+  --nav-current: var(--gold);
+  --nav-accent: var(--gold);
+  --nav-focus: var(--gold);
+  --nav-search-bg: var(--navy-2);
+  --nav-field-bg: var(--navy);
+  --nav-field-line: var(--white-12);
+  --nav-field-ink: var(--white);
+  --nav-field-hint: var(--white-64);
+  --shadow-panel: 0 18px 40px -12px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: var(--night);
+    --bg-alt: var(--night-2);
+    --surface: var(--night-3);
+    --text: var(--cream);
+    --text-muted: rgb(250 246 238 / 0.72);
+    --line: var(--white-12);
+    --heading: var(--cream);
+    --accent-ink: var(--brass);
+    --btn-ink: var(--cream);
+    --pressed-bg: var(--gold);
+    --pressed-ink: var(--navy);
+    --focus: var(--gold);
+    --navy-edge: var(--white-12);
+    --ph-stripe: var(--white-08);
+    --todo-ink: var(--cream);
+    --nav-bg: var(--navy);
+    --nav-ink: var(--white);
+    --nav-ink-soft: var(--white-80);
+    --nav-line: var(--white-08);
+    --nav-hover: var(--white-08);
+    --nav-current: var(--gold);
+    --nav-accent: var(--gold);
+    --nav-focus: var(--gold);
+    --nav-search-bg: var(--navy-2);
+    --nav-field-bg: var(--navy);
+    --nav-field-line: var(--white-12);
+    --nav-field-ink: var(--white);
+    --nav-field-hint: var(--white-64);
+    --shadow-panel: 0 18px 40px -12px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.35);
+  }
+}
+
+/* ---------- 2. Tailwind theme: utilities map to the tokens ----------
+   Brand colours (bg-navy, text-gold, …) for the fixed navy blocks and gold
+   buttons; role colours (bg-surface, text-heading, border-line, …) for
+   everything that changes between light and dark. Tailwind's default palette
+   is removed so off-system colours can't be used by accident. */
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-gold: var(--gold);
+  --color-brass: var(--brass);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-white: var(--white);
+
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-line: var(--line);
+  --color-heading: var(--heading);
+  --color-accent-ink: var(--accent-ink);
+  --color-btn-ink: var(--btn-ink);
+  --color-pressed: var(--pressed-bg);
+  --color-pressed-ink: var(--pressed-ink);
+  --color-focus: var(--focus);
+
+  /* Fonts come from next/font in layout.tsx */
+  --font-display: var(--font-jakarta), "Inter", system-ui, sans-serif; /* same value as the :root token */
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --shadow-panel: var(--shadow-panel);
+  --shadow-bar: var(--shadow-bar);
+  --ease-out: var(--ease-out);
+}
+
+/* ---------- 3. Base ----------
+   Inside @layer base so Tailwind utilities (e.g. text-white on a navy hero) win. */
+@layer base {
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--heading);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}

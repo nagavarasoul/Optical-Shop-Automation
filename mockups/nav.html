@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Navigation mockup · VS Lens Mart</title>
+<meta name="description" content="Mockup for client sign-off: VS Lens Mart site navigation (v1.2, updated with the client's form).">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Page-only styles for this mockup's review area (not part of the header component) */
+  .review { padding-block: var(--s-8) var(--s-9); }
+  .review__head { display: grid; gap: var(--s-4); max-width: 46rem; }
+  .review__head h1 { font-size: var(--fs-xl); color: var(--heading); }
+  .review__head p { color: var(--text-muted); font-size: var(--fs-md); }
+  .review__grid { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); margin-top: var(--s-7); }
+  .review h2 { font-size: var(--fs-lg); color: var(--heading); margin-bottom: var(--s-4); }
+  .steps { display: grid; gap: var(--s-3); counter-reset: s; }
+  .steps li { display: grid; grid-template-columns: 28px 1fr; gap: var(--s-3); align-items: start; }
+  .steps li::before {
+    counter-increment: s; content: counter(s);
+    display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy); color: var(--gold); font-weight: 600; font-size: var(--fs-xs);
+  }
+  .steps kbd {
+    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 600;
+    padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface);
+  }
+  .open-items { display: grid; gap: var(--s-2); }
+  .open-items li { display: flex; gap: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+  .open-items li span:first-child { flex: 1; }
+  .open-items li span:last-child { color: var(--text-muted); white-space: nowrap; }
+  .filler { margin-top: var(--s-8); display: grid; gap: var(--s-4); }
+  .filler .ph { min-height: 14rem; }
+
+</style>
+</head>
+<body data-page="frames">
+
+<!-- ========== Review area (mockup only) ========== -->
+<main id="main" class="container review">
+  <div class="review__head">
+    <h1>Navigation mockup</h1>
+    <p>This is the header that sits on every page of the site. Try it with a mouse, a keyboard and on a phone. The dashed gold tags are notes for review and won't appear on the live site. Anything tagged <span class="todo">DUMMY</span> is placeholder data until you send the real details.</p>
+  </div>
+
+  <div class="review__grid">
+    <section>
+      <h2>Try this</h2>
+      <ol class="steps">
+        <li><span>Hover or click <strong>Frames</strong>, <strong>Sunglasses</strong>, <strong>Lenses</strong> and <strong>Eye care</strong> to open each menu.</span></li>
+        <li><span>Press <kbd>Tab</kbd> to move through the menu, <kbd>Enter</kbd> to open one, and <kbd>Esc</kbd> to close it.</span></li>
+        <li><span>Click the <strong>WhatsApp</strong> icon. Each branch has its own number, so you choose Indresham or Patelguda first.</span></li>
+        <li><span>Make the window narrow, or open this file on a phone. The menu becomes a full-screen list, with Call, WhatsApp and Book test buttons pinned to the bottom. Call and WhatsApp also ask which branch.</span></li>
+        <li><span>Links to pages that aren't mocked up yet show where they'll go.</span></li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Changed since the last version</h2>
+      <ul class="open-items">
+        <li><span>Hours confirmed: 9 AM–9:30 PM, 7 days</span><span>Your form</span></li>
+        <li><span>Each branch has its own number; Call and WhatsApp ask which branch</span><span>Your form</span></li>
+        <li><span>Eye care lists your 4 services</span><span>Your form</span></li>
+        <li><span>Removed: rim-type filter, contact lenses, reading glasses, care products</span><span>Until confirmed</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Waiting on the client</h2>
+      <ul class="open-items">
+        <li><span>Patelguda phone / WhatsApp number</span><span>Phone</span></li>
+        <li><span>Do you like the branch picker for Call and WhatsApp?</span><span>Approve</span></li>
+        <li><span>High-res logo file. The current one spells "FAMLY" in the ring.</span><span>Logo</span></li>
+        <li><span>Frame and lens brand names</span><span>Menus</span></li>
+        <li><span>Price tiers and "from ₹" amounts</span><span>Menus</span></li>
+        <li><span>Shapes stocked; blue-cut and photochromic lenses; do you sell contact lenses, reading glasses or care products?</span><span>Menus</span></li>
+        <li><span>Real product photos for Men / Women / Kids; test room, storefronts, a past camp</span><span>Photos</span></li>
+        <li><span>Is the eye test free?</span><span>Copy</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="filler" aria-hidden="true">
+    <div class="ph">Page content goes here (scroll to see the header stay pinned)</div>
+    <div class="ph">Page content</div>
+  </div>
+</main>
+
+<script src="site.js"></script>
+</body>
+</html>

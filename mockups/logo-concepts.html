@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logo concepts | VS Lens Mart</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Five logo concepts for the client to choose from. Not part of the website, and none is approved.
+     The SVGs live in assets/logo-concepts/; this page inlines them so the colours can switch on navy. -->
+
+<header class="rv-top">
+  <div class="container rv-top__inner">
+    <div>
+      <h1>Logo concepts: <span class="gold">pick your favourite</span></h1>
+      <p>VS Lens Mart · Five first drafts · 23 October 2026</p>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="container rv-main">
+
+  <section class="rv-sec" aria-labelledby="how-title">
+    <h2 id="how-title">How to choose</h2>
+    <p>Each concept is shown on a light background, on navy, and at the small sizes it will appear in the website header, on a phone and in the browser tab. Tell us the number you like best on WhatsApp, along with anything you'd change. We'll then refine that one into the final logo.</p>
+  </section>
+
+  <div class="lc-list">
+
+    <article class="lc-card" data-concept="1">
+      <h2><span class="lc-num">1</span> Lens monogram</h2>
+      <p>"VS" in gold inside a navy lens, with a brass rim and a small highlight, like light catching a lens. Simple, premium and easy to read at any size.</p>
+    </article>
+
+    <article class="lc-card" data-concept="2">
+      <h2><span class="lc-num">2</span> Spectacles</h2>
+      <p>A pair of round glasses with "V" in one lens and "S" in the other. It says "optical shop" at a glance.</p>
+    </article>
+
+    <article class="lc-card" data-concept="3">
+      <h2><span class="lc-num">3</span> Family eye</h2>
+      <p>An eye with a heart in its centre: eye care given with the warmth of a family shop. Paired with "The Optical Family".</p>
+    </article>
+
+    <article class="lc-card" data-concept="4">
+      <h2><span class="lc-num">4</span> Heritage badge</h2>
+      <p>A cleaner version of your current round badge, keeping "Care · Love · Quality · Family" (now spelled correctly) and "Est. 1999". Its ring text is too small to read in the browser tab, so concept 1 would stand in there.</p>
+    </article>
+
+    <article class="lc-card" data-concept="5">
+      <h2><span class="lc-num">5</span> Clear vision</h2>
+      <p>A bold "VS" under a gold arc, like the curve of a lens or an eyebrow. The most modern and minimal of the five.</p>
+    </article>
+
+  </div>
+</main>
+
+<script>
+// Inline each concept's SVG files into the light, navy and small-size panels.
+(function () {
+  var dir = 'assets/logo-concepts/';
+  var uid = 0;
+  function load(file) {
+    return fetch(dir + file).then(function (r) {
+      if (!r.ok) throw new Error(file);
+      return r.text();
+    });
+  }
+  // Each copy of an SVG needs its own ids, or the badge's text paths clash.
+  function inline(svg) {
+    var s = '-' + (++uid);
+    return svg.replace(/id="([^"]+)"/g, 'id="$1' + s + '"').replace(/href="#([^"]+)"/g, 'href="#$1' + s + '"');
+  }
+  function fallback(file) {
+    return '<img src="' + dir + file + '" alt="">';
+  }
+  document.querySelectorAll('.lc-card').forEach(function (card) {
+    var n = card.dataset.concept;
+    var full = 'concept-' + n + '.svg';
+    // Concept 4's ring text can't be read at 32 px or less, so the tab icon uses concept 1's monogram.
+    var mark = 'concept-' + n + '-mark.svg';
+    var tab = 'concept-' + (n === '4' ? '1' : n) + '-mark.svg';
+    var panels = document.createElement('div');
+    panels.className = 'lc-panels';
+    panels.innerHTML =
+      '<figure class="lc-panel lc-panel--light"><div class="lc-full" data-file="' + full + '"></div><figcaption>On light</figcaption></figure>' +
+      '<figure class="lc-panel lc-panel--navy"><div class="lc-full" data-file="' + full + '"></div><figcaption>On navy</figcaption></figure>' +
+      '<figure class="lc-panel lc-panel--small">' +
+        '<div class="lc-bar"><span class="lc-head" data-file="' + full + '"></span></div>' +
+        '<div class="lc-sizes">' +
+          '<span class="lc-app" data-file="' + mark + '"></span>' +
+          '<span class="lc-tab"><span class="lc-fav" data-file="' + tab + '"></span>VS Lens Mart</span>' +
+        '</div>' +
+        '<figcaption>Website header, phone icon and browser tab</figcaption></figure>';
+    card.appendChild(panels);
+  });
+  var cache = {};
+  document.querySelectorAll('[data-file]').forEach(function (el) {
+    var f = el.dataset.file;
+    (cache[f] = cache[f] || load(f)).then(function (svg) {
+      el.innerHTML = inline(svg);
+    }).catch(function () {
+      el.innerHTML = fallback(f);
+    });
+  });
+})();
+</script>
+</body>
+</html>

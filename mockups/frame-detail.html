@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frame | VS Lens Mart</title>
+<meta name="description" content="Frame details, exact price and availability at VS Lens Mart, Indresham and Patelguda.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="frames">
+
+<main id="main">
+  <div class="container" id="page"></div>
+
+  <section class="section section--white" aria-labelledby="related-title" id="related" hidden>
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">You may also like</p>
+          <h2 class="section__title" id="related-title">Similar frames</h2>
+        </div>
+        <a class="link-arrow" href="/frames">View all frames <svg class="icon"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="frames-row" id="related-row"></div>
+    </div>
+  </section>
+</main>
+
+<script src="site.js"></script>
+<script src="frames-data.js"></script>
+<script>
+/* Frame and sunglasses detail (mockup). Spec: Requirements_Frames.md section 4 and
+   Requirements_Sunglasses.md section 4. Live routes: /frames/[slug] and /sunglasses/[slug];
+   here the slug comes from ?frame=<slug>. Data is DUMMY (frames-data.js). */
+(() => {
+  const page = document.getElementById('page');
+  const param = new URLSearchParams(location.search).get('frame');
+  // Opening the file directly shows the newest frame; an unknown slug shows the not-found state
+  const f = param ? VSLM.ALL.find(x => VSLM.slug(x) === param) : VSLM.FRAMES[0];
+  const SITE = 'https://vslensmart.example';   // DUMMY domain (D4)
+
+  if (!f) {
+    document.title = 'Frame not available | VS Lens Mart';
+    page.innerHTML = `
+      <section class="notfound">
+        <svg class="icon" aria-hidden="true"><use href="#i-glasses"/></svg>
+        <h1>This frame isn't available</h1>
+        <p>It may have been sold or removed. Browse our current frames, or ask us on WhatsApp.</p>
+        <div class="empty__actions">
+          <a class="btn btn--primary" href="/frames">Browse frames</a>
+          <button class="btn btn--outline-dark" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker">Ask on WhatsApp</button>
+        </div>
+        <p class="mock-only"><span class="todo">Live: a real 404 for unknown or draft frames</span></p>
+      </section>`;
+    return;
+  }
+
+  const sun = VSLM.isSun(f);
+  const K = sun
+    ? { list: 'Sunglasses', path: '/sunglasses', many: 'sunglasses', page: 'sunglasses' }
+    : { list: 'Frames', path: '/frames', many: 'frames', page: 'frames' };
+  // The menu highlights Frames or Sunglasses to match this item
+  if (sun) {
+    document.querySelector('.menu [aria-current="page"]')?.removeAttribute('aria-current');
+    document.querySelector('[aria-controls="mega-sun"]')?.setAttribute('aria-current', 'page');
+  }
+  document.getElementById('related-title').textContent = `Similar ${K.many}`;
+  const allLink = document.querySelector('#related .link-arrow');
+  allLink.href = K.path;
+  allLink.firstChild.textContent = `View all ${K.many} `;
+
+  const name = `${f.brand} ${f.model}`;
+  const price = VSLM.rupees(f.price);
+  const pageUrl = `${SITE}${VSLM.url(f)}`;
+  document.title = `${name} · ${price} | VS Lens Mart`;
+  document.querySelector('meta[name="description"]').content = `${name}, ${f.colour.toLowerCase()} ${f.shape.toLowerCase()} frame, ${price} at VS Lens Mart. ${f.sold ? 'Sold out.' : 'Available at ' + f.where.toLowerCase() + '.'}`;
+
+  // Product structured data (price, availability) for search engines
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Product', name, sku: f.code, brand: { '@type': 'Brand', name: f.brand },
+    color: f.colour, material: f.material,
+    offers: { '@type': 'Offer', priceCurrency: 'INR', price: f.price, url: pageUrl,
+      availability: f.sold ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock' },
+  });
+  document.head.append(ld);
+
+  // Up to 5 photos (Q34). "Model wearing it" only with written consent; product-only until then.
+  const SHOTS = ['Front', 'Side', 'Angle', 'Close-up', 'Folded'];
+  const enquire = f.sold
+    ? `Hi VS Lens Mart, ${VSLM.noun(f)} ${f.code} (${name}) is sold out. Do you have something similar?`
+    : VSLM.enquiryText(f);
+  const share = `Look at ${sun ? 'these sunglasses' : 'this frame'} at VS Lens Mart: ${name}, ${price}. ${pageUrl}`;
+  const fav = VSLM.getFavs().includes(f.code);
+
+  page.innerHTML = `
+    <nav aria-label="Breadcrumb" style="padding-top:24px">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="${K.path}">${K.list}</a></li><li aria-current="page">${name}</li></ol>
+    </nav>
+
+    <div class="pdp">
+      <div class="gallery">
+        <div class="gallery__main" id="gallery" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Photos of ${name}. Use the arrow keys to change photo.">
+          ${f.sold ? '<span class="gallery__badge">Sold out</span>' : ''}
+          ${SHOTS.map((s, i) => `
+            <div class="gallery__slide${i ? '' : ' is-active'}" role="group" aria-roledescription="slide" aria-label="${s} view, ${i + 1} of ${SHOTS.length}">
+              <svg class="icon" aria-hidden="true" style="${s === 'Side' ? 'transform:scaleX(.45)' : s === 'Angle' ? 'transform:skewY(-6deg) scaleX(.85)' : ''}"><use href="#i-glasses"/></svg>
+              <span class="caps">${s} view</span>
+            </div>`).join('')}
+          <span class="todo mock-only">DUMMY photos. Live: up to 5 staff photos, product only</span>
+        </div>
+        <div class="thumbs" role="group" aria-label="Choose a photo">
+          ${SHOTS.map((s, i) => `<button class="thumb" type="button" data-shot="${i}" aria-current="${!i}" aria-label="${s} view"><svg class="icon" aria-hidden="true"><use href="#i-glasses"/></svg>${s}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="pinfo">
+        <p class="caps pinfo__brand">${f.brand}</p>
+        <h1>${f.model}</h1>
+        <p class="pinfo__code">${sun ? 'Code' : 'Frame code'} ${f.code}</p>
+        <p class="pinfo__price">${price}<small>Exact in-store price</small></p>
+        <div class="pstatus">
+          ${f.sold ? '<span class="pill pill--sold">Sold out</span>' : '<span class="pill pill--stock">In stock</span>'}
+          ${sun ? f.lens.map(l => `<span class="pill">${l}</span>`).join('') : ''}
+          <span class="pill"><svg class="icon"><use href="#i-pin"/></svg>Available at: ${f.where === 'Both branches' ? 'Indresham &amp; Patelguda' : f.where}</span>
+        </div>
+        <div class="pactions">
+          <button class="btn btn--primary" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"
+            data-wa-text="${enquire.replace(/"/g, '&quot;')}"><svg class="icon icon--sm"><use href="#i-wa"/></svg>${f.sold ? 'Ask about similar frames' : 'Enquire on WhatsApp'}</button>
+          <button class="icon-pill" type="button" id="fav" aria-pressed="${fav}" aria-label="Save ${name} to favourites"><svg class="icon"><use href="#i-heart"/></svg></button>
+          <a class="icon-pill" href="https://wa.me/?text=${encodeURIComponent(share)}" target="_blank" rel="noopener" aria-label="Share this frame on WhatsApp" title="Share on WhatsApp"><svg class="icon"><use href="#i-share"/></svg></a>
+          <a class="btn btn--outline-dark pactions__book" href="/book-eye-test">Book an eye test</a>
+        </div>
+        <p class="mock-only"><span class="todo">Share opens WhatsApp so the customer picks a contact; it doesn't go to the shop. Link uses the DUMMY domain (D4)</span></p>
+
+        <div class="specs">
+          <h2>Frame details</h2>
+          <dl>
+            <dt>${sun ? 'Code' : 'Frame code'}</dt><dd>${f.code}</dd>
+            <dt>Brand</dt><dd>${f.brand}</dd>
+            <dt>Model</dt><dd>${f.model}</dd>
+            ${sun ? '' : `<dt>Category</dt><dd>${f.category}</dd>`}
+            <dt>Gender</dt><dd>${f.gender}</dd>
+            <dt>Colour</dt><dd>${f.colour}</dd>
+            <dt>Shape</dt><dd>${f.shape}</dd>
+            ${sun ? `<dt>Lens type</dt><dd>${f.lens.join(', ')}</dd><dt>Lens colour</dt><dd>${f.lensColour}</dd>` : ''}
+            <dt>Material</dt><dd>${f.material}</dd>
+            <dt>Size</dt><dd>${f.size} <span style="color:var(--text-muted)">(lens–bridge–temple, mm)</span></dd>
+          </dl>
+        </div>
+
+        <div class="note">
+          <svg class="icon"><use href="#i-lens"/></svg>
+          ${!sun
+            ? '<div><b>Need prescription lenses?</b><p>All branded lenses are available. We fit them in store. <a href="/lenses">See lenses</a></p></div>'
+            : f.lens.includes('Power sunglasses')
+              ? '<div><b>Made to your prescription</b><p>Power sunglasses are made to your prescription in store. Book an eye test first if you don’t have a recent prescription. <a href="/book-eye-test">Book an eye test</a></p></div>'
+              : '<div><b>Want this pair with your power?</b><p>Ask us on WhatsApp and we’ll tell you if these can be made with your prescription.</p></div>'}
+        </div>
+        <div class="note">
+          <svg class="icon"><use href="#i-store"/></svg>
+          <div><b>Try it on at a branch</b><p>Indresham and Patelguda, open 7 days, 9 AM–9:30 PM. <a href="/contact#branches">Find a branch</a></p></div>
+        </div>
+      </div>
+    </div>`;
+
+  /* ---------- Gallery: thumbnails, arrow keys, swipe, click to zoom ---------- */
+  const gallery = document.getElementById('gallery');
+  const slides = [...gallery.querySelectorAll('.gallery__slide')];
+  const thumbs = [...document.querySelectorAll('.thumb')];
+  let cur = 0;
+  function show(i) {
+    cur = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('is-active', k === cur));
+    thumbs.forEach((t, k) => t.setAttribute('aria-current', String(k === cur)));
+    gallery.classList.remove('is-zoomed');
+  }
+  thumbs.forEach(t => t.addEventListener('click', () => show(+t.dataset.shot)));
+  gallery.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(cur + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(cur - 1); }
+  });
+  let startX = null;
+  gallery.addEventListener('pointerdown', e => { startX = e.clientX; });
+  gallery.addEventListener('pointerup', e => {
+    if (startX === null) return;
+    const dx = e.clientX - startX; startX = null;
+    if (Math.abs(dx) > 40) return show(cur + (dx < 0 ? 1 : -1));           // swipe
+    if (matchMedia('(min-width: 768px)').matches) {                          // click to zoom (desktop)
+      const r = gallery.getBoundingClientRect();
+      slides[cur].querySelector('.icon').style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`;
+      gallery.classList.toggle('is-zoomed');
+    }
+  });
+
+  /* ---------- Favourite (device only) ---------- */
+  const favBtn = document.getElementById('fav');
+  favBtn.addEventListener('click', () => favBtn.setAttribute('aria-pressed', String(VSLM.toggleFav(f.code))));
+
+  /* ---------- Related: up to 4 approved frames with the same shape or brand ---------- */
+  const pool = sun ? VSLM.SUNGLASSES : VSLM.FRAMES;
+  const close = x => x.shape === f.shape || (sun && x.lens.some(l => f.lens.includes(l)));
+  const related = pool
+    .filter(x => x !== f && (close(x) || x.brand === f.brand))
+    .sort((a, b) => (a.sold - b.sold) || (close(b) - close(a)))
+    .slice(0, 4);
+  if (related.length) {
+    const row = document.getElementById('related-row');
+    row.innerHTML = related.map(x => VSLM.card(x)).join('');
+    VSLM.wireFavs(row);
+    document.getElementById('related').hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

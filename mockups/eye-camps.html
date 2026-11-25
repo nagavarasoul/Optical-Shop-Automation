@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free eye camps | VS Lens Mart, Indresham and Patelguda</title>
+<meta name="description" content="VS Lens Mart runs free eye camps around Indresham and Patelguda. See the next camp, and photos from past camps.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="eye-camps">
+
+<main id="main">
+
+  <!-- ========== 1. Page hero ========== -->
+  <section class="hero hero--page" aria-labelledby="camps-title">
+    <div class="hero__media"><div class="ph ph--dark"><span><svg class="icon icon--lg" style="margin:0 auto 6px"><use href="#i-camp"/></svg>Eye camp photo<br>TODO (client), with permission</span></div></div>
+    <div class="container hero__inner">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Eye camps</li></ol></nav>
+      <p class="eyebrow"><span>IN THE COMMUNITY</span></p>
+      <h1 class="hero__title" id="camps-title">Free eye camps, <span class="gold">close to home.</span></h1>
+      <p class="hero__sub">Since 1999 we've taken eye checks to schools, villages and neighbourhoods around Indresham and Patelguda.</p>
+      <p class="camp-stat" id="camp-stat"></p>
+    </div>
+  </section>
+
+  <!-- ========== 2–3. Upcoming ========== -->
+  <section class="section section--white" aria-labelledby="next-title" id="upcoming">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Upcoming</p>
+          <h2 class="section__title" id="next-title">Next camp</h2>
+        </div>
+      </div>
+      <div id="next"></div>
+      <div id="more-upcoming" hidden>
+        <p class="caps section__eyebrow" style="margin:32px 0 12px">More upcoming camps</p>
+        <div class="camp-rows" id="rows"></div>
+      </div>
+      <p class="mock-only" style="margin-top:16px"><span class="todo">DUMMY camps (C19). Live: camps from admin; upcoming vs past is worked out from the date. Walk-in, no registration (Q99)</span></p>
+    </div>
+  </section>
+
+  <!-- ========== 4. Past camps ========== -->
+  <section class="section" aria-labelledby="past-title" id="past">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <p class="caps section__eyebrow">Past camps</p>
+          <h2 class="section__title" id="past-title">Where we've been</h2>
+        </div>
+      </div>
+      <div class="year-chips" role="group" aria-label="Filter by year" id="years"></div>
+      <div class="past-grid" id="past-grid"></div>
+      <div class="results-foot" id="past-foot"></div>
+    </div>
+  </section>
+
+  <!-- ========== 5. Bring a camp to your community ========== -->
+  <section class="help-band" aria-labelledby="bring-title">
+    <div class="container help-band__inner">
+      <div>
+        <h2 id="bring-title">Bring a camp to your community</h2>
+        <p>Run a school, society or village group? We can bring an eye camp to you.</p>
+      </div>
+      <div class="help-band__actions">
+        <button class="btn btn--primary" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"
+          data-wa-text="Hi VS Lens Mart, we'd like to organise an eye camp at "><svg class="icon icon--sm"><use href="#i-wa"/></svg>Ask on WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6. Call to action ========== -->
+  <section class="book-band" aria-labelledby="cta-title">
+    <div class="container book-band__inner">
+      <div>
+        <h2 id="cta-title">Can't wait for the next camp?</h2>
+        <p>Book an eye test at either branch, 7 days a week.</p>
+      </div>
+      <div class="hero__actions"><a class="btn btn--navy" href="/book-eye-test">Book an eye test</a></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="site.js"></script>
+<script src="camps-data.js"></script>
+<script>
+/* Eye camps listing (mockup). Spec: Requirements_EyeCamps.md section 3. Data: camps-data.js (DUMMY C19). */
+(() => {
+  const C = VSLM_CAMPS;
+  const $ = s => document.querySelector(s);
+  const up = C.upcoming(), past = C.past();
+  const PAGE = 9;
+
+  // Stat line totalled from past camps
+  const people = past.reduce((n, c) => n + (c.people || 0), 0);
+  $('#camp-stat').textContent = past.length ? `${past.length} camps · ${people.toLocaleString('en-IN')} people checked` : '';
+
+  /* ---------- Next camp ---------- */
+  const next = up[0];
+  if (!next) {
+    $('#next').innerHTML = `<div class="empty"><svg class="icon" aria-hidden="true"><use href="#i-camp"/></svg>
+      <h2>No camps scheduled right now</h2><p>Ask us on WhatsApp, or see our past camps below.</p>
+      <div class="empty__actions"><button class="btn btn--primary" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker">Ask on WhatsApp</button></div></div>`;
+  } else {
+    const d = C.parse(next.date);
+    $('#next').innerHTML = `
+      <article class="next-camp">
+        <time class="datebox" datetime="${next.date}"><span>${d.toLocaleDateString('en-IN', { weekday: 'short' })}</span><b>${d.getDate()}</b><span>${d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}</span></time>
+        <div class="next-camp__body">
+          <h3>${next.title}</h3>
+          <div class="camp-facts">
+            <span><svg class="icon"><use href="#i-cal"/></svg>${C.longDate(next)}</span>
+            <span><svg class="icon"><use href="#i-clock"/></svg>${C.timeRange(next)}</span>
+            <span><svg class="icon"><use href="#i-pin"/></svg>${next.place}</span>
+          </div>
+          <p>${next.text}</p>
+          <ul class="pill-list" aria-label="What's offered">${C.OFFERED.map(o => `<li>${o}</li>`).join('')}</ul>
+          <div class="camp-actions">
+            <a class="btn btn--primary" href="${C.directions(next)}" target="_blank" rel="noopener"><svg class="icon icon--sm"><use href="#i-dir"/></svg>Directions</a>
+            <a class="btn btn--outline-dark" href="${C.icsLink(next)}" download="${next.slug}.ics"><svg class="icon icon--sm"><use href="#i-cal"/></svg>Add to calendar</a>
+            <a class="btn btn--outline-dark" href="${C.shareLink(next)}" target="_blank" rel="noopener"><svg class="icon icon--sm"><use href="#i-share"/></svg>Share on WhatsApp</a>
+            <a class="link-arrow" href="${C.url(next)}">Details <svg class="icon"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  /* ---------- More upcoming ---------- */
+  if (up.length > 1) {
+    $('#rows').innerHTML = up.slice(1).map(c => `
+      <a class="camp-row" href="${C.url(c)}">
+        <time datetime="${c.date}">${C.longDate(c)}</time>
+        <span><b>${c.title}</b><small>${c.place}</small></span>
+        <span class="link-arrow">Details <svg class="icon"><use href="#i-arrow"/></svg></span>
+      </a>`).join('');
+    $('#more-upcoming').hidden = false;
+  }
+
+  /* ---------- Past camps: year chips (from the data) + load more ---------- */
+  if (!past.length) { $('#past').hidden = true; return; }
+  const years = [...new Set(past.map(c => c.date.slice(0, 4)))];
+  let year = new URLSearchParams(location.search).get('year');
+  if (!years.includes(year)) year = null;
+  let shown = PAGE;
+  $('#years').innerHTML = ['All', ...years].map(y => `<button class="chip-toggle" type="button" data-camp-year="${y}" aria-pressed="false">${y}</button>`).join('');
+
+  function render() {
+    const list = past.filter(c => !year || c.date.startsWith(year));
+    $('#past-grid').innerHTML = list.slice(0, shown).map(c => `
+      <a class="ccard" href="${C.url(c)}">
+        <div class="ph">Camp photo<br>TODO (client)</div>
+        <time datetime="${c.date}">${C.longDate(c)}</time>
+        <h3>${c.title}</h3>
+        <p>${c.place}</p>
+        <span class="ccard__people"><svg class="icon icon--sm"><use href="#i-eye"/></svg>${c.people} people checked</span>
+      </a>`).join('');
+    const n = Math.min(shown, list.length);
+    $('#past-foot').innerHTML = `<span>Showing ${n} of ${list.length}</span>${n < list.length ? '<button class="btn btn--outline-dark" type="button" id="more">Load more</button>' : ''}`;
+    document.querySelectorAll('[data-camp-year]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.campYear === (year || 'All'))));
+    try { history.replaceState(null, '', (year ? `?year=${year}` : location.pathname) + location.hash); } catch (_) {}
+  }
+  document.addEventListener('click', e => {
+    const y = e.target.closest('[data-camp-year]');
+    if (y) { year = y.dataset.campYear === 'All' ? null : y.dataset.campYear; shown = PAGE; return render(); }
+    if (e.target.closest('#more')) { shown += PAGE; render(); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

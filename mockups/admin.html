@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard | VS Lens Mart staff area</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="adm-body" data-admin="dashboard">
+
+<main id="main" class="adm-main">
+
+  <!-- ========== 1. Greeting ========== -->
+  <header class="adm-head">
+    <p class="caps section__eyebrow" id="today"></p>
+    <h1 id="greeting"></h1>
+    <p id="who"></p>
+  </header>
+  <p class="mock-only" style="margin-bottom:16px"><span class="todo">DUMMY accounts, drafts, bookings and enquiries (C22). Use "View as" (bottom left) to compare the Staff and Admin dashboards. Live: counts and lists from the database, visible only to signed-in staff</span></p>
+
+  <!-- ========== 2. To-do cards ========== -->
+  <div class="adm-todo" id="todo"></div>
+
+  <!-- ========== 3. Quick actions ========== -->
+  <div class="adm-quick" aria-label="Quick actions" role="group">
+    <a class="btn btn--primary" href="/admin/frames/new"><svg class="icon icon--sm"><use href="#i-plus"/></svg>Add frame</a>
+    <a class="btn btn--outline-dark" href="/admin/sunglasses/new"><svg class="icon icon--sm"><use href="#i-sun"/></svg>Add sunglasses</a>
+    <a class="btn btn--outline-dark" href="/admin/eye-camps/new"><svg class="icon icon--sm"><use href="#i-camp"/></svg>Add eye camp</a>
+    <a class="btn btn--outline-dark" href="/admin/gallery/new"><svg class="icon icon--sm"><use href="#i-image"/></svg>Add gallery photo</a>
+  </div>
+
+  <div class="adm-grid">
+    <div class="adm-col">
+
+      <!-- ========== 4. Today's bookings ========== -->
+      <section class="apanel" aria-labelledby="bk-title">
+        <div class="apanel__head">
+          <h2 id="bk-title"><svg class="icon"><use href="#i-cal"/></svg>Today's bookings</h2>
+          <a href="/admin/bookings">All bookings</a>
+        </div>
+        <div class="apanel__body">
+          <div class="chips-pick bk-filter" role="radiogroup" aria-label="Show bookings for">
+            <label class="rchoice"><input type="radio" name="bk-branch" value=""><span>Both branches</span></label>
+            <label class="rchoice"><input type="radio" name="bk-branch" value="Indresham"><span>Indresham</span></label>
+            <label class="rchoice"><input type="radio" name="bk-branch" value="Patelguda"><span>Patelguda</span></label>
+          </div>
+          <div class="bk-list" id="bk-list"></div>
+        </div>
+      </section>
+
+      <!-- ========== 5a. Approval queue (admin) ========== -->
+      <section class="apanel" aria-labelledby="dq-title" data-only="admin">
+        <div class="apanel__head">
+          <h2 id="dq-title"><svg class="icon"><use href="#i-shield"/></svg>Waiting for your approval</h2>
+          <a href="/admin/frames?status=waiting">See all</a>
+        </div>
+        <div class="apanel__body"><div class="dq-list" id="dq-admin"></div></div>
+      </section>
+
+      <!-- ========== 5b. Your drafts (staff) ========== -->
+      <section class="apanel" aria-labelledby="mine-title" data-only="staff">
+        <div class="apanel__head">
+          <h2 id="mine-title"><svg class="icon"><use href="#i-glasses"/></svg>Your frames in progress</h2>
+          <a href="/admin/frames?mine=1">See all</a>
+        </div>
+        <div class="apanel__body"><div class="dq-list" id="dq-staff"></div></div>
+      </section>
+    </div>
+
+    <div class="adm-col">
+      <!-- ========== 6a. Branch details (client change 2026-10-21) ========== -->
+      <section class="apanel" aria-labelledby="br-title">
+        <div class="apanel__head">
+          <h2 id="br-title"><svg class="icon"><use href="#i-pin"/></svg><span id="br-name"></span></h2>
+          <a href="/admin/branches" data-only="admin">Edit branches</a>
+        </div>
+        <div class="apanel__body"><div class="br-info" id="br-info"></div></div>
+      </section>
+
+      <!-- ========== 6. Recent changes ========== -->
+      <section class="apanel" aria-labelledby="rc-title">
+        <div class="apanel__head"><h2 id="rc-title"><svg class="icon"><use href="#i-clock"/></svg>Recent changes</h2></div>
+        <div class="apanel__body">
+          <ul class="rc-list" id="rc-list"></ul>
+          <p class="mock-only"><span class="todo">Live: from updated_by / updated_at. The full audit log is a later module (Q111–112)</span></p>
+        </div>
+      </section>
+
+      <!-- ========== 7. Site at a glance ========== -->
+      <section class="apanel" aria-labelledby="gl-title">
+        <div class="apanel__head"><h2 id="gl-title"><svg class="icon"><use href="#i-eye"/></svg>On the site now</h2></div>
+        <div class="apanel__body"><div class="glance" id="glance"></div></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script src="admin.js"></script>
+<script src="frames-data.js"></script>
+<script src="camps-data.js"></script>
+<script>
+/* Staff area dashboard (mockup). Spec: Requirements_Admin.md section 5.
+   Live: counts and lists from the database under row-level security; customer names and
+   numbers appear only here, for signed-in staff. Everything below is DUMMY (C22). */
+(() => {
+  const A = VSLM_ADMIN, $ = s => document.querySelector(s);
+  const admin = A.role === 'admin';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- 1. Greeting ---------- */
+  const now = new Date(), h = now.getHours();
+  $('#today').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  $('#greeting').textContent = `Good ${h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'}, ${A.user.name}.`;
+  $('#who').textContent = `${A.user.role} · ${A.user.branch} branch · ${A.BRANCHES[A.branch].address}`;
+
+  /* ---------- 6a. Branch details (the branch picked in the sidebar) ---------- */
+  const B = A.BRANCHES[A.branch];
+  $('#br-name').textContent = `${B.name} branch`;
+  $('#br-info').innerHTML = `
+    <div><svg class="icon icon--sm"><use href="#i-pin"/></svg><address>${B.address}</address></div>
+    <div><svg class="icon icon--sm"><use href="#i-phone"/></svg><span>${B.phone}${B.dummy ? ` <span class="todo">DUMMY (${B.dummy})</span>` : ''}</span></div>
+    <div><svg class="icon icon--sm"><use href="#i-clock"/></svg><span>${A.hours(B)}</span></div>`;
+
+  /* ---------- 4. Today's bookings (DUMMY customers, unusable numbers) ---------- */
+  const BOOKINGS = [
+    ['10:20 AM', 'Customer A', 'Indresham', 'attended', 1, '', 'Citizens Colony, Indresham'],
+    ['11:40 AM', 'Customer B', 'Patelguda', 'attended', 2, '', 'Near Ellenki College, Patelguda'],
+    ['1:00 PM', 'Customer C', 'Indresham', 'booked', 3, 'For their child'],
+    ['4:20 PM', 'Customer D', 'Indresham', 'booked', 4, '', 'Patancheru'],
+    ['5:40 PM', 'Customer E', 'Patelguda', 'booked', 5, 'Wears reading glasses'],
+    ['7:00 PM', 'Customer F', 'Indresham', 'booked', 6, '', 'Ameenpur'],
+  ].map(([time, name, branch, status, n, note, address]) => ({ time, name, branch, status, phone: `+91 00000 0000${n}`, note, address }));
+  // Show the branch picked in the sidebar first; "Both branches" is one tap away
+  document.querySelector(`input[name="bk-branch"][value="${A.branch}"]`).checked = true;
+  const STATUSES = [['booked', 'Booked'], ['attended', 'Attended'], ['no_show', 'No-show'], ['cancelled', 'Cancelled']];
+  function renderBookings() {
+    const f = document.querySelector('input[name="bk-branch"]:checked').value;
+    const list = BOOKINGS.filter(b => !f || b.branch === f);
+    $('#bk-list').innerHTML = list.length ? list.map(b => {
+      const i = BOOKINGS.indexOf(b);
+      return `
+      <div class="bk-row">
+        <span class="bk-row__time">${b.time}</span>
+        <span class="bk-row__who"><b>${esc(b.name)} <span class="todo">DUMMY</span></b><span>${b.branch} · ${b.phone}${b.note ? ` · ${esc(b.note)}` : ''}</span>${b.address ? `<span>Address: ${esc(b.address)}</span>` : ''}</span>
+        <span class="bk-row__act">
+          <a href="tel:${b.phone.replace(/\s/g, '')}" data-dummy aria-label="Call ${esc(b.name)}"><svg class="icon icon--sm"><use href="#i-phone"/></svg></a>
+          <a href="https://wa.me/${b.phone.replace(/\D/g, '')}" data-dummy aria-label="WhatsApp ${esc(b.name)}"><svg class="icon icon--sm"><use href="#i-wa"/></svg></a>
+        </span>
+        <select class="adm-select" data-bk="${i}" aria-label="Status for ${esc(b.name)}, ${b.time}">
+          ${STATUSES.map(([v, l]) => `<option value="${v}" ${v === b.status ? 'selected' : ''}>${l}</option>`).join('')}
+        </select>
+      </div>`; }).join('') : '<p class="apanel__empty">No bookings today.</p>';
+  }
+  document.addEventListener('change', e => {
+    if (e.target.name === 'bk-branch') renderBookings();
+    const s = e.target.closest('[data-bk]');
+    if (s) {
+      const b = BOOKINGS[+s.dataset.bk];
+      b.status = s.value;
+      A.toast(`${b.name} marked <code>${s.options[s.selectedIndex].text}</code>`);
+      renderTodo();
+    }
+  });
+
+  /* ---------- 2. To-do cards ---------- */
+  const waiting = A.DRAFTS.filter(d => d.status === 'waiting');
+  const mine = A.DRAFTS.filter(d => d.by.startsWith(A.user.name));
+  function renderTodo() {
+    const open = BOOKINGS.filter(b => b.status === 'booked');
+    const per = br => BOOKINGS.filter(b => b.branch === br).length;
+    const approval = admin
+      ? { n: waiting.length, label: 'Waiting for approval', sub: 'New frames from staff', href: '/admin/frames?status=waiting' }
+      : { n: mine.length, label: 'Your frames in progress', sub: `${mine.filter(d => d.status === 'sent-back').length} sent back to you`, href: '/admin/frames?mine=1' };
+    $('#todo').innerHTML = [
+      approval,
+      { n: BOOKINGS.length, label: 'Bookings today', sub: `Indresham ${per('Indresham')} · Patelguda ${per('Patelguda')} · ${open.length} still to come`, href: '/admin/bookings' },
+      { n: 3, label: 'New enquiries', sub: 'From the contact form', href: '/admin/enquiries' },
+    ].map(c => `
+      <a href="${c.href}" class="${c.n ? 'is-due' : ''}">
+        <span class="adm-todo__num">${c.n}</span>
+        <span class="adm-todo__label">${c.label}</span>
+        <span class="adm-todo__sub">${c.sub}</span>
+      </a>`).join('');
+  }
+
+  /* ---------- 5. Approval queue (admin) / your drafts (staff) ---------- */
+  const row = (d, action) => `
+    <div class="dq-row">
+      <span class="dq-thumb" aria-hidden="true"><svg class="icon"><use href="#i-glasses"/></svg></span>
+      <span class="dq-row__text">
+        <b>${d.brand} ${d.model}</b>
+        <span>${d.code} · ${VSLM.rupees(d.price)} · ${d.category} · ${d.photos} photo${d.photos === 1 ? '' : 's'}</span>
+        <span>${admin ? `Added by ${d.by}, ${d.ago}` : A.badge(d.status)}</span>
+        ${!admin && d.note ? `<span class="dq-note"><b>Admin's note:</b> ${esc(d.note)}</span>` : ''}
+      </span>
+      <a class="btn btn--sm ${action.primary ? 'btn--primary' : 'btn--outline-dark'}" href="/admin/${d.category === 'Sunglasses' ? 'sunglasses' : 'frames'}/${d.code}">${action.label}</a>
+    </div>`;
+  $('#dq-admin').innerHTML = waiting.length ? waiting.map(d => row(d, { label: 'Review', primary: true })).join('') : '<p class="apanel__empty">Nothing waiting. All caught up.</p>';
+  $('#dq-staff').innerHTML = mine.length
+    ? mine.map(d => row(d, d.status === 'sent-back' ? { label: 'Fix and resend', primary: true } : { label: 'Open' })).join('')
+    : '<p class="apanel__empty">No drafts. Tap "Add frame" to start one.</p>';
+
+  /* ---------- 6. Recent changes ---------- */
+  $('#rc-list').innerHTML = [
+    ['10:42 AM', 'Staff 1 marked <b>VSF-1021</b> sold out'],
+    ['10:15 AM', 'Staff 2 sent <b>VSF-1031</b> Titan Aviator Gold for approval'],
+    ['9:50 AM', 'Admin approved <b>VSF-1024</b> Ray-Ban RB5154 Clubmaster'],
+    ['9:30 AM', 'Staff 3 added 4 photos to <b>Community Eye Camp, Indresham</b>'],
+    ['Yesterday', 'Admin sent <b>VSF-1030</b> back to Staff 1 with a note'],
+    ['Yesterday', 'Staff 2 changed the price of <b>VSF-1009</b> to ₹1,990'],
+  ].map(([time, text]) => `<li><time>${time}</time><span>${text}</span></li>`).join('');
+
+  /* ---------- 7. On the site now ---------- */
+  const sold = VSLM.ALL.filter(f => f.sold).length;
+  $('#glance').innerHTML = [
+    [VSLM.FRAMES.length, 'Frames live'], [VSLM.SUNGLASSES.length, 'Sunglasses live'],
+    [sold, 'Sold out (still shown)'], [A.DRAFTS.length, 'Drafts, not on the site'],
+    [VSLM_CAMPS.upcoming().length, 'Upcoming eye camps'], [28, 'Gallery photos'],
+  ].map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('');
+
+  renderTodo(); renderBookings();
+})();
+</script>
+</body>
+</html>

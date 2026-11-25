@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 120" role="img" aria-label="VS Lens Mart logo, concept 2: spectacles, with name">
+  <!-- Logo concept draft for the client to choose from. Not approved. Convert the text to outlines before final use. -->
+  <g fill="none" stroke="var(--lg-ink, #0D1B2A)" stroke-width="6" stroke-linecap="round">
+    <circle cx="33" cy="64" r="24"/><circle cx="87" cy="64" r="24"/>
+    <path d="M55 56 Q60 49 65 56"/><path d="M10 58 L4 50"/><path d="M110 58 L116 50"/>
+  </g>
+  <text x="33" y="75" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="30" fill="var(--lg-accent, #C9A227)">V</text>
+  <text x="87" y="75" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="30" fill="var(--lg-accent, #C9A227)">S</text>
+  <text x="140" y="66" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="34" letter-spacing="0.5" fill="var(--lg-ink, #0D1B2A)">LENS MART</text>
+  <text x="141" y="90" font-family="Inter, Arial, sans-serif" font-weight="600" font-size="12.5" letter-spacing="4" fill="var(--lg-accent, #C9A227)">SINCE 1999</text>
+</svg>

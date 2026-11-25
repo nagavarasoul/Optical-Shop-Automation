@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="VS Lens Mart logo, concept 3: family eye">
+  <!-- Logo concept draft for the client to choose from. Not approved. Convert the text to outlines before final use. -->
+  <path d="M6 60 Q60 4 114 60 Q60 116 6 60 Z" fill="none" stroke="var(--lg-ink, #0D1B2A)" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="60" cy="60" r="22" fill="var(--lg-iris, #0D1B2A)"/>
+  <path d="M60 71 C47 63 47 51 54.5 51 C57.5 51 59.3 53 60 55 C60.7 53 62.5 51 65.5 51 C73 51 73 63 60 71 Z" fill="#F5C842"/>
+</svg>

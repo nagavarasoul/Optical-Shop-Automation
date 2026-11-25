@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eye camp | VS Lens Mart</title>
+<meta name="description" content="Eye camp details from VS Lens Mart.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="eye-camps">
+
+<main id="main">
+  <div class="container" id="page"></div>
+
+  <section class="section section--white" aria-labelledby="more-title" id="more-camps" hidden>
+    <div class="container">
+      <div class="section__head">
+        <div><h2 class="section__title" id="more-title">More camps</h2></div>
+        <a class="link-arrow" href="/eye-camps">All eye camps <svg class="icon"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="past-grid" id="more-grid"></div>
+    </div>
+  </section>
+</main>
+
+
+<script src="site.js"></script>
+<script src="camps-data.js"></script>
+<script src="lightbox.js"></script>
+<script>
+/* Camp detail (mockup). Spec: Requirements_EyeCamps.md section 4.
+   Live route: /eye-camps/[slug]; here the slug comes from ?camp=<slug>. Data: camps-data.js (DUMMY C19). */
+(() => {
+  const C = VSLM_CAMPS;
+  const page = document.getElementById('page');
+  const slug = new URLSearchParams(location.search).get('camp');
+  const c = slug ? C.bySlug(slug) : C.upcoming()[0] || C.past()[0];
+
+  if (!c) {
+    document.title = 'Camp not available | VS Lens Mart';
+    page.innerHTML = `<section class="notfound"><svg class="icon icon--square" aria-hidden="true"><use href="#i-camp"/></svg>
+      <h1>This camp isn't available</h1><p>It may have been removed. See all our eye camps instead.</p>
+      <div class="empty__actions"><a class="btn btn--primary" href="/eye-camps">All eye camps</a></div></section>`;
+    return;
+  }
+
+  const upcoming = C.isUpcoming(c);
+  document.title = `${c.title}, ${C.longDate(c)} | VS Lens Mart eye camps`;
+  document.querySelector('meta[name="description"]').content = `${c.title} on ${C.longDate(c)}, ${C.timeRange(c)}, at ${c.place}.`;
+  if (upcoming) {   // Event structured data for upcoming camps ("free" only once the client confirms)
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: c.title,
+      startDate: `${c.date}T${c.start}:00+05:30`, endDate: `${c.date}T${c.end}:00+05:30`,
+      location: { '@type': 'Place', name: c.place, address: c.place },
+      organizer: { '@type': 'Organization', name: 'VS Lens Mart' } });
+    document.head.append(ld);
+  }
+
+  const facts = `
+    <div class="camp-facts">
+      <span><svg class="icon"><use href="#i-cal"/></svg><time datetime="${c.date}">${C.longDate(c)}</time></span>
+      <span><svg class="icon"><use href="#i-clock"/></svg>${C.timeRange(c)}</span>
+      <span><svg class="icon"><use href="#i-pin"/></svg>${c.place}</span>
+      ${c.with ? `<span><svg class="icon"><use href="#i-store"/></svg>With ${c.with}</span>` : ''}
+    </div>`;
+
+  page.innerHTML = `
+    <nav aria-label="Breadcrumb" style="padding-top:24px"><ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/eye-camps">Eye camps</a></li><li aria-current="page">${c.title}</li></ol></nav>
+    <header class="page-head">
+      <span class="status ${upcoming ? 'status--upcoming' : 'status--past'}">${upcoming ? 'Upcoming' : 'Past camp'}</span>
+      <h1>${c.title}</h1>
+      ${facts}
+    </header>
+    <div class="camp-detail">
+      <div class="camp-detail__main">
+        <p>${c.text}</p>
+        ${upcoming ? `
+          <div><h2>What's offered</h2><ul class="pill-list" style="margin-top:12px">${C.OFFERED.map(o => `<li>${o}</li>`).join('')}</ul></div>
+          <div><h2>What to bring</h2><p style="margin-top:8px">${C.BRING} <span class="todo">DUMMY (C19)</span></p></div>
+          <div class="camp-actions">
+            <a class="btn btn--primary" href="${C.directions(c)}" target="_blank" rel="noopener"><svg class="icon icon--sm"><use href="#i-dir"/></svg>Directions</a>
+            <a class="btn btn--outline-dark" href="${C.icsLink(c)}" download="${c.slug}.ics"><svg class="icon icon--sm"><use href="#i-cal"/></svg>Add to calendar</a>
+            <a class="btn btn--outline-dark" href="${C.shareLink(c)}" target="_blank" rel="noopener"><svg class="icon icon--sm"><use href="#i-share"/></svg>Share on WhatsApp</a>
+          </div>
+          <p>Questions? <button class="clear-all" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker" data-wa-text="Hi VS Lens Mart, I have a question about the ${c.title} on ${C.longDate(c)}.">Ask on WhatsApp</button></p>`
+        : `
+          <div><h2>Photos</h2><p style="margin-top:8px">Tap a photo to see it larger.</p>
+            <div class="photo-grid" style="margin-top:16px">${Array.from({ length: c.photos || 0 }, (_, i) => `
+              <button type="button" data-photo="${i}" aria-label="Open photo ${i + 1} of ${c.photos}"><div class="ph">Photo ${i + 1}<br>TODO (client)</div></button>`).join('')}
+            </div>
+            <p class="mock-only" style="margin-top:12px"><span class="todo">Live: up to 12 photos from admin. Photos with people only with permission (Q146)</span></p>
+          </div>
+          <p>Thank you to everyone who came, and to ${c.with.toLowerCase()} for helping us organise it.</p>`}
+      </div>
+      <aside class="camp-side">
+        ${upcoming ? '<div class="ph">Map (loads when scrolled into view)</div>'
+          : `<div class="value"><span class="people-big">${c.people}</span><p>people had their eyes checked at this camp.</p></div>`}
+        <p class="mock-only"><span class="todo">DUMMY camp (C19)</span></p>
+      </aside>
+    </div>`;
+
+  /* ---------- More camps: up to 3 others, upcoming first ---------- */
+  const others = [...C.upcoming(), ...C.past()].filter(x => x !== c).slice(0, 3);
+  if (others.length) {
+    document.getElementById('more-grid').innerHTML = others.map(x => `
+      <a class="ccard" href="${C.url(x)}">
+        <div class="ph">Camp photo<br>TODO (client)</div>
+        <time datetime="${x.date}">${C.longDate(x)}</time>
+        <h3>${x.title}</h3>
+        <p>${C.isUpcoming(x) ? 'Upcoming · ' : ''}${x.place}</p>
+      </a>`).join('');
+    document.getElementById('more-camps').hidden = false;
+  }
+
+  /* ---------- Photo large view (shared lightbox.js) ---------- */
+  const photos = Array.from({ length: c.photos || 0 }, (_, i) => ({
+    label: `Photo ${i + 1}<br>TODO (client)`, caption: `${c.title}, photo ${i + 1}`, meta: C.longDate(c) }));
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-photo]');
+    if (b) VSLM_LIGHTBOX.open(photos, +b.dataset.photo, b);
+  });
+})();
+</script>
+</body>
+</html>

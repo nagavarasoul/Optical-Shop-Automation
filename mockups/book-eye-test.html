@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book an eye test | VS Lens Mart, Indresham and Patelguda</title>
+<meta name="description" content="Book an eye test at VS Lens Mart in Indresham or Patelguda. Pick a branch, a day and a time. Open 7 days, 9 AM to 9:30 PM.">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('vslm-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="book">
+
+<main id="main">
+  <div class="container">
+    <nav aria-label="Breadcrumb" style="padding-top:24px"><ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Book an eye test</li></ol></nav>
+    <header class="page-head">
+      <h1>Book your eye test</h1>
+      <p>Takes a minute. Pick a branch, a day and a time.</p>
+    </header>
+
+    <!-- ========== Booking form ========== -->
+    <div class="book" id="book">
+      <form id="bform" novalidate>
+        <div class="esummary" id="esummary" role="alert" tabindex="-1" hidden></div>
+
+        <!-- Step 1: branch and day -->
+        <fieldset class="bstep" id="step1">
+          <legend><span class="bstep__num">1</span>Branch and day</legend>
+          <div class="branch-pick">
+            <label class="rchoice"><input type="radio" name="branch" value="indresham"><span><b>Indresham</b>Citizens Colony, Indresham · 9 AM–9:30 PM</span></label>
+            <label class="rchoice"><input type="radio" name="branch" value="patelguda"><span><b>Patelguda</b>Falcon One Shopping Plaza · 9 AM–9:30 PM</span></label>
+          </div>
+          <p class="bsub" id="day-label">Day</p>
+          <div class="chips-pick" id="days" role="radiogroup" aria-labelledby="day-label"></div>
+          <label class="other-date">Pick another date <input type="date" id="other-date"></label>
+        </fieldset>
+
+        <!-- Step 2: time -->
+        <fieldset class="bstep" id="step2" disabled>
+          <legend><span class="bstep__num">2</span>Time</legend>
+          <div id="slots"><p class="slot-empty">Choose a branch and a day first.</p></div>
+          <p class="mock-only" style="margin-top:12px"><span class="todo">DUMMY rules (C18): 20-minute slots, 2 per slot, 2 hours' notice, up to 30 days ahead; closed on Diwali day (D3). Live: counts only, from the server</span></p>
+        </fieldset>
+
+        <!-- Step 3: details -->
+        <fieldset class="bstep" id="step3" disabled>
+          <legend><span class="bstep__num">3</span>Your details</legend>
+          <div class="ffield" id="f-name">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" autocomplete="name" maxlength="60" aria-describedby="name-err">
+            <span class="ferr" id="name-err" hidden></span>
+          </div>
+          <div class="ffield" id="f-phone">
+            <label for="phone">Mobile number</label>
+            <div class="phone"><span class="phone__pre" aria-hidden="true">+91</span><input type="tel" id="phone" name="phone" autocomplete="tel-national" inputmode="numeric" maxlength="14" aria-describedby="phone-hint phone-err"></div>
+            <span class="ffield__hint" id="phone-hint">10-digit mobile. We use it for this booking only.</span>
+            <span class="ferr" id="phone-err" hidden></span>
+          </div>
+          <div class="ffield">
+            <span class="ffield__label" id="for-label">Who is the test for? <span class="ffield__hint">(optional)</span></span>
+            <div class="chips-pick" role="radiogroup" aria-labelledby="for-label">
+              <label class="rchoice"><input type="radio" name="for" value="Myself" checked><span>Myself</span></label>
+              <label class="rchoice"><input type="radio" name="for" value="Someone else"><span>Someone else</span></label>
+            </div>
+          </div>
+          <div class="ffield">
+            <label for="address">Your area or address <span class="ffield__hint">(optional)</span></label>
+            <input type="text" id="address" name="address" autocomplete="street-address" maxlength="150" placeholder="For example: Citizens Colony, Indresham" aria-describedby="address-hint">
+            <span class="ffield__hint" id="address-hint">Helps the branch know where you're coming from. <span class="todo">Client change 2026-10-21: shown to staff in the admin</span></span>
+          </div>
+          <div class="ffield">
+            <label for="note">Anything we should know? <span class="ffield__hint">(optional)</span></label>
+            <textarea id="note" name="note" maxlength="300" placeholder="For example: I wear glasses for reading" aria-describedby="note-count"></textarea>
+            <span class="ffield__hint" id="note-count">0 / 300</span>
+          </div>
+          <div class="ffield" id="f-consent">
+            <label class="consent"><input type="checkbox" id="consent" name="consent" aria-describedby="consent-err">
+              <span>I agree that VS Lens Mart may use my name, number and address (if given) to manage this booking and contact me about it. <a href="/privacy">Privacy policy</a></span></label>
+            <span class="ferr" id="consent-err" hidden></span>
+          </div>
+          <!-- Spam trap: people never see or fill this -->
+          <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        </fieldset>
+
+        <p class="bsubmit__sum" id="sum-inline" aria-live="polite"></p>
+        <div class="bsubmit">
+          <button class="btn btn--primary" type="submit" id="submit">Confirm booking</button>
+          <span class="ffield__hint">Free eye test <span class="todo mock-only">DUMMY (D7)</span> · takes 5–20 minutes</span>
+        </div>
+        <div class="mock-panel mock-only" role="group" aria-label="Mockup: preview error states" style="margin-top:16px">
+          <span>Preview on submit:</span>
+          <button type="button" data-sim="filled" aria-pressed="false">Slot just filled</button>
+          <button type="button" data-sim="server" aria-pressed="false">Server error</button>
+        </div>
+      </form>
+
+      <!-- Summary (desktop) -->
+      <aside class="bsummary" aria-label="Your booking">
+        <h2>Your booking</h2>
+        <dl>
+          <dt>Branch</dt><dd id="s-branch">Not chosen</dd>
+          <dt>Day</dt><dd id="s-day">Not chosen</dd>
+          <dt>Time</dt><dd id="s-time">Not chosen</dd>
+        </dl>
+        <div class="bsummary__help">
+          <span>Open 7 days, 9 AM–9:30 PM. The test takes 5–20 minutes.</span>
+          <span>Prefer to talk to us?</span>
+          <div class="branch__actions">
+            <button class="btn btn--outline-dark" type="button" data-picker="call" aria-haspopup="true" aria-expanded="false" aria-controls="picker"><svg class="icon icon--sm"><use href="#i-phone"/></svg>Call</button>
+            <button class="btn btn--outline-dark" type="button" data-picker="whatsapp" aria-haspopup="true" aria-expanded="false" aria-controls="picker"><svg class="icon icon--sm"><use href="#i-wa"/></svg>WhatsApp</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ========== Confirmation ========== -->
+    <section class="bdone" id="done" tabindex="-1" aria-labelledby="done-title" hidden>
+      <span class="bdone__tick" aria-hidden="true">✓</span>
+      <h2 id="done-title">You're booked!</h2>
+      <p>Your booking reference</p>
+      <span class="bdone__ref" id="d-ref"></span>
+      <dl id="d-list"></dl>
+      <div class="bdone__actions">
+        <a class="btn btn--primary" id="d-wa" target="_blank" rel="noopener"><svg class="icon icon--sm"><use href="#i-wa"/></svg>Send to the branch on WhatsApp</a>
+        <a class="btn btn--outline-dark" id="d-ics" download="vs-lens-mart-eye-test.ics"><svg class="icon icon--sm"><use href="#i-cal"/></svg>Add to calendar</a>
+      </div>
+      <p class="bdone__note">The eye test takes 5–20 minutes. Please bring your current glasses.</p>
+      <p class="bdone__note"><b>Need to change or cancel?</b> Call or WhatsApp the branch.</p>
+      <button class="clear-all" type="button" id="again">Book another test</button>
+      <p class="mock-only"><span class="todo">Mockup: nothing is saved. Live: the booking is inserted into appointments (insert-only), and this screen shows only what was just submitted</span></p>
+    </section>
+  </div>
+</main>
+
+<script src="site.js"></script>
+<script>
+/* Book an eye test (mockup). Spec: docs/requirements/Requirements_Booking.md.
+   Live: availability comes from a server function (counts only) and the booking is a
+   server action with Zod validation inserting into `appointments` (insert-only RLS). */
+(() => {
+  const BRANCHES = {
+    indresham: { name: 'Indresham', phone: '9550685417' },
+    patelguda: { name: 'Patelguda', phone: '0000000000', dummy: true },   // DUMMY (D2)
+  };
+  // DUMMY rules (C18, D3)
+  const OPEN = 9 * 60, LAST_START = 21 * 60, SLOT = 20, CAPACITY = 2, NOTICE = 120, WINDOW_DAYS = 30;
+  const CLOSED = ['2026-11-08'];   // Diwali day (DUMMY D3)
+
+  const $ = s => document.querySelector(s);
+  const pad = n => String(n).padStart(2, '0');
+  const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const dayName = d => d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  const timeName = m => { const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}:${pad(mm)} ${h < 12 ? 'AM' : 'PM'}`; };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const lastDay = addDays(today, WINDOW_DAYS);
+
+  const state = { branch: null, date: null, time: null };
+  const sim = { filled: false, server: false };
+  const filledNow = new Set();   // slots the "just filled" preview has taken
+
+  /* ---------- Step 1: days ---------- */
+  const days = $('#days');
+  days.innerHTML = Array.from({ length: 14 }, (_, i) => {
+    const d = addDays(today, i);
+    const label = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-IN', { weekday: 'short' });
+    return `<label class="rchoice"><input type="radio" name="day" value="${ymd(d)}"><span>${label}<small>${d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</small></span></label>`;
+  }).join('');
+  const other = $('#other-date');
+  other.min = ymd(today); other.max = ymd(lastDay);
+
+  /* ---------- Step 2: slots (DUMMY availability: counts only) ---------- */
+  // A stable pseudo-random count per branch, day and time, standing in for the server's counts
+  const booked = (b, date, m) => {
+    if (filledNow.has(`${b}|${date}|${m}`)) return CAPACITY;
+    let h = 2166136261;   // FNV-1a, so neighbouring slots don't share a pattern
+    for (const ch of `${b}|${date}|${m}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+    return h % 8 === 0 ? CAPACITY : h % CAPACITY;   // about 1 in 8 slots full
+  };
+  function slotsFor(b, date) {
+    const isToday = date === ymd(today);
+    const now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
+    const out = [];
+    for (let m = OPEN; m <= LAST_START; m += SLOT) {
+      if (isToday && m < nowMin + NOTICE) continue;   // at least 2 hours' notice
+      out.push({ m, full: booked(b, date, m) >= CAPACITY });
+    }
+    return out;
+  }
+  function renderSlots() {
+    const box = $('#slots');
+    if (!state.branch || !state.date) { box.innerHTML = '<p class="slot-empty">Choose a branch and a day first.</p>'; return; }
+    if (CLOSED.includes(state.date)) {
+      box.innerHTML = `<p class="slot-empty">Closed on ${dayName(parse(state.date))}. Please pick another day.</p>`;
+      state.time = null; return;
+    }
+    const all = slotsFor(state.branch, state.date);
+    if (!all.length) { box.innerHTML = '<p class="slot-empty">No times left today. Please pick another day.</p>'; state.time = null; return; }
+    if (!all.some(s => s.m === state.time && !s.full)) state.time = null;
+    const groups = [['Morning', 0, 12 * 60], ['Afternoon', 12 * 60, 17 * 60], ['Evening', 17 * 60, 24 * 60]];
+    box.innerHTML = groups.map(([name, from, to]) => {
+      const list = all.filter(s => s.m >= from && s.m < to);
+      if (!list.length) return '';
+      const id = `g-${name.toLowerCase()}`;
+      return `<p class="bsub" id="${id}">${name}</p>
+        <div class="chips-pick" role="radiogroup" aria-labelledby="${id}">${list.map(s => `
+          <label class="rchoice"><input type="radio" name="time" value="${s.m}" ${s.full ? 'disabled' : ''} ${s.m === state.time ? 'checked' : ''}>
+            <span>${timeName(s.m)}${s.full ? '<small>Full</small>' : ''}</span></label>`).join('')}
+        </div>`;
+    }).join('');
+  }
+
+  /* ---------- Summary + step enabling ---------- */
+  function update() {
+    const b = state.branch && BRANCHES[state.branch];
+    $('#s-branch').textContent = b ? b.name : 'Not chosen';
+    $('#s-day').textContent = state.date ? dayName(parse(state.date)) : 'Not chosen';
+    $('#s-time').textContent = state.time != null ? timeName(state.time) : 'Not chosen';
+    $('#sum-inline').textContent = b && state.date && state.time != null ? `${b.name} · ${dayName(parse(state.date))} · ${timeName(state.time)}` : '';
+    $('#step1').classList.toggle('is-done', !!(state.branch && state.date));
+    $('#step2').disabled = !(state.branch && state.date);
+    $('#step2').classList.toggle('is-done', state.time != null);
+    $('#step3').disabled = state.time == null;
+    document.querySelectorAll('input[name="day"]').forEach(i => { i.checked = i.value === state.date; });
+    other.value = state.date && ![...document.querySelectorAll('input[name="day"]')].some(i => i.value === state.date) ? state.date : '';
+  }
+
+  $('#bform').addEventListener('change', e => {
+    const t = e.target;
+    if (t.name === 'branch') { state.branch = t.value; renderSlots(); }
+    else if (t.name === 'day') { state.date = t.value; renderSlots(); }
+    else if (t.id === 'other-date') {
+      const v = t.value, d = v && parse(v);
+      if (d && d >= today && d <= lastDay) { state.date = v; renderSlots(); }
+    } else if (t.name === 'time') { state.time = Number(t.value); }
+    update();
+  });
+  $('#note').addEventListener('input', e => { $('#note-count').textContent = `${e.target.value.length} / 300`; });
+
+  /* ---------- Prefill from the home page band (?branch=&date=); invalid values are ignored ---------- */
+  const q = new URLSearchParams(location.search);
+  if (BRANCHES[q.get('branch')]) { state.branch = q.get('branch'); document.querySelector(`input[name="branch"][value="${state.branch}"]`).checked = true; }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(q.get('date') || '')) {
+    const d = parse(q.get('date'));
+    if (d >= today && d <= lastDay) state.date = q.get('date');
+  }
+  renderSlots(); update();
+
+  /* ---------- Validation (the server repeats every check) ---------- */
+  const setErr = (field, msg) => {
+    const box = $(`#f-${field}`), err = $(`#${field}-err`);
+    box.classList.toggle('has-error', !!msg);
+    err.hidden = !msg; err.textContent = msg || '';
+    const input = box.querySelector('input');
+    if (input) input.setAttribute('aria-invalid', String(!!msg));
+  };
+  function validate() {
+    const errors = [];
+    if (!state.branch) errors.push(['branch', 'Choose a branch', 'step1']);
+    if (!state.date) errors.push(['day', 'Choose a day', 'step1']);
+    if (state.time == null) errors.push(['time', 'Choose a time', 'step2']);
+    const name = $('#name').value.trim();
+    const nameMsg = name.length < 2 ? 'Enter your full name' : '';
+    setErr('name', nameMsg); if (nameMsg) errors.push(['name', nameMsg, 'name']);
+    const digits = $('#phone').value.replace(/\D/g, '').replace(/^91(?=\d{10}$)/, '');
+    const phoneMsg = /^[6-9]\d{9}$/.test(digits) ? '' : 'Enter a 10-digit mobile number starting with 6, 7, 8 or 9';
+    setErr('phone', phoneMsg); if (phoneMsg) errors.push(['phone', phoneMsg, 'phone']);
+    const consentMsg = $('#consent').checked ? '' : 'Tick the box to agree, so we can manage your booking';
+    setErr('consent', consentMsg); if (consentMsg) errors.push(['consent', consentMsg, 'consent']);
+    return { errors, name, phone: digits };
+  }
+  function showSummary(title, items, extra = '') {
+    const box = $('#esummary');
+    box.innerHTML = `<h2>${title}</h2>${items.length ? `<ul>${items.map(([, msg, target]) => `<li><a href="#${target}">${msg}</a></li>`).join('')}</ul>` : ''}${extra}`;
+    box.hidden = false;
+    box.focus();
+  }
+
+  /* ---------- Submit ---------- */
+  const btn = $('#submit');
+  $('#bform').addEventListener('submit', e => {
+    e.preventDefault();
+    if (document.querySelector('input[name="website"]').value) return;   // spam trap filled: ignore silently
+    const { errors, name, phone } = validate();
+    if (errors.length) return showSummary('Please check your booking', errors);
+    $('#esummary').hidden = true;
+
+    btn.setAttribute('aria-busy', 'true'); btn.disabled = true; btn.textContent = 'Booking…';
+    setTimeout(() => {
+      btn.removeAttribute('aria-busy'); btn.disabled = false; btn.textContent = 'Confirm booking';
+      const b = BRANCHES[state.branch];
+      if (sim.server) {
+        return showSummary("We couldn't save your booking", [], `
+          <p>Please try again, or call the branch.</p>
+          <div class="branch__actions">
+            <a class="btn btn--outline-dark" href="tel:+91${b.phone}" ${b.dummy ? 'data-dummy' : ''}>Call ${b.name}</a>
+            <a class="btn btn--outline-dark" href="https://wa.me/91${b.phone}" target="_blank" rel="noopener" ${b.dummy ? 'data-dummy' : ''}>WhatsApp ${b.name}</a>
+          </div>`);
+      }
+      if (sim.filled) {
+        const t = timeName(state.time);
+        filledNow.add(`${state.branch}|${state.date}|${state.time}`);
+        state.time = null; renderSlots(); update();
+        return showSummary(`Sorry, ${t} just filled up`, [['time', 'Please pick another time', 'step2']]);
+      }
+      confirmBooking(b, name, phone);
+    }, 700);
+  });
+
+  /* ---------- Confirmation (shows only what was just submitted) ---------- */
+  function confirmBooking(b, name, phone) {
+    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    const ref = 'VS-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const day = dayName(parse(state.date)), time = timeName(state.time);
+    $('#d-ref').textContent = ref;
+    $('#d-list').innerHTML = `
+      <dt>Branch</dt><dd>${b.name}</dd><dt>Day</dt><dd>${day}</dd><dt>Time</dt><dd>${time}</dd>
+      <dt>Name</dt><dd>${name.replace(/</g, '&lt;')}</dd><dt>Mobile</dt><dd>•••••• ${phone.slice(-4)}</dd>`;
+    const msg = `Hi VS Lens Mart, I've booked an eye test at ${b.name} on ${day} at ${time}. Ref ${ref}. Name: ${name}.`;
+    const wa = $('#d-wa');
+    wa.href = `https://wa.me/91${b.phone}?text=${encodeURIComponent(msg)}`;
+    if (b.dummy) wa.setAttribute('data-dummy', ''); else wa.removeAttribute('data-dummy');
+
+    // Calendar file built in the browser from the details just entered
+    const start = parse(state.date); start.setMinutes(state.time);
+    const end = new Date(start.getTime() + SLOT * 60000);
+    const stamp = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//VS Lens Mart//Booking//EN', 'BEGIN:VEVENT',
+      `UID:${ref}@vslensmart.example`, `DTSTART:${stamp(start)}`, `DTEND:${stamp(end)}`,
+      `SUMMARY:Eye test at VS Lens Mart ${b.name}`, `DESCRIPTION:Booking ${ref}. Please bring your current glasses.`,
+      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    $('#d-ics').href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+
+    $('#book').hidden = true;
+    $('#done').hidden = false;
+    $('#done').focus();
+    scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  $('#again').addEventListener('click', () => {
+    $('#bform').reset(); Object.assign(state, { branch: null, date: null, time: null });
+    ['name', 'phone', 'consent'].forEach(f => setErr(f, ''));
+    $('#note-count').textContent = '0 / 300';
+    renderSlots(); update();
+    $('#done').hidden = true; $('#book').hidden = false;
+  });
+
+  /* ---------- Mockup-only: preview the error states ---------- */
+  document.querySelectorAll('[data-sim]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.sim;
+    sim[k] = !sim[k];
+    b.setAttribute('aria-pressed', String(sim[k]));
+  }));
+})();
+</script>
+</body>
+</html>
